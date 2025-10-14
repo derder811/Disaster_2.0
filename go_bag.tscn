@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://onldtzbulae66m"]
+
+[ext_resource type="Texture2D" uid="uid://bgc88dm1qjilq" path="res://asset/Furnitures/Go bag.png" id="1_caem6"]
+[ext_resource type="PackedScene" uid="uid://d3v5enbqtirae" path="res://asset/Interaction/Interaction Area/interaction_area.tscn" id="2_m1vr3"]
+[ext_resource type="Script" path="res://go_bag.gd" id="3_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ymkvi"]
+size = Vector2(40, 30)
+
+[node name="GoBag" type="StaticBody2D"]
+script = ExtResource("3_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 0)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_caem6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_ymkvi")
+
+[node name="InteractionArea" parent="." instance=ExtResource("2_m1vr3")]
+position = Vector2(0, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, 0)
+shape = SubResource("RectangleShape2D_ymkvi")

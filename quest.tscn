@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3 uid="uid://ba5u1mr1tujdf"]
+
+[ext_resource type="Texture2D" uid="uid://b8s5plu5ve13k" path="res://asset/Furnitures/Quest Text Box.png" id="1_bv2al"]
+[ext_resource type="Script" uid="uid://br8vbqdbc18us" path="res://quest.gd" id="1_hhw1v"]
+
+[node name="Quest" type="Node"]
+script = ExtResource("1_hhw1v")
+
+[node name="Quest UI" type="CanvasLayer" parent="."]
+
+[node name="Quest Text Box" type="TextureRect" parent="Quest UI"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.64
+offset_left = 833.0
+offset_top = 52.0
+offset_right = 13.0
+offset_bottom = -154.72
+texture = ExtResource("1_bv2al")
+expand_mode = 1
+
+[node name="Objectives" type="VBoxContainer" parent="Quest UI/Quest Text Box"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 66.0
+offset_right = 282.0
+offset_bottom = 169.0
+alignment = 1
+
+[node name="Objective 1" type="HBoxContainer" parent="Quest UI/Quest Text Box/Objectives"]
+layout_mode = 2
+
+[node name="Checkbox1" type="CheckBox" parent="Quest UI/Quest Text Box/Objectives/Objective 1"]
+layout_mode = 2
+disabled = true
+
+[node name="Label1" type="Label" parent="Quest UI/Quest Text Box/Objectives/Objective 1"]
+layout_mode = 2
+text = "Interact with Electric Fan"
+
+[node name="Objective 2" type="HBoxContainer" parent="Quest UI/Quest Text Box/Objectives"]
+layout_mode = 2
+
+[node name="Checkbox2" type="CheckBox" parent="Quest UI/Quest Text Box/Objectives/Objective 2"]
+layout_mode = 2
+disabled = true
+
+[node name="Label2" type="Label" parent="Quest UI/Quest Text Box/Objectives/Objective 2"]
+layout_mode = 2
+text = "Interact with Water Bucket"
+
+[node name="Objective 3" type="HBoxContainer" parent="Quest UI/Quest Text Box/Objectives"]
+layout_mode = 2
+
+[node name="Checkbox3" type="CheckBox" parent="Quest UI/Quest Text Box/Objectives/Objective 3"]
+layout_mode = 2
+disabled = true
+
+[node name="Label3" type="Label" parent="Quest UI/Quest Text Box/Objectives/Objective 3"]
+layout_mode = 2
+text = "Interact with Frying Pan"
