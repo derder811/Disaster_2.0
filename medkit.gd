@@ -86,13 +86,5 @@ func pickup_item():
 		print("✗ ERROR: Player doesn't have get_items method!")
 
 func show_item_self_talk():
-	# Find the self-talk system in the scene
-	var self_talk_system = get_tree().get_first_node_in_group("self_talk_system")
-	if self_talk_system and self_talk_system.has_method("trigger_custom_self_talk"):
-		var message = "This first aid kit has everything we need for basic injuries. Better check the expiry dates."
-		self_talk_system.trigger_custom_self_talk(message)
-	else:
-		# Fallback: use DialogManager directly
-		if player_nearby:
-			var dialog_position = player_nearby.global_position + Vector2(0, -100)
-			DialogManager.start_dialog(dialog_position, ["A first aid kit... this could save lives if someone gets hurt.", "Keep a well-stocked first aid kit accessible. Include bandages, antiseptics, and basic medical supplies."], "first_aid_kit")
+	# Use SimpleDialogManager to show safety tips
+	SimpleDialogManager.show_item_dialog("first_aid_kit", global_position)

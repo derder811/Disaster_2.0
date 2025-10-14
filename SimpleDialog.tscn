@@ -5,8 +5,8 @@
 [node name="SimpleDialog" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 450.0
-offset_bottom = 200.0
+offset_right = 550.0
+offset_bottom = 280.0
 script = ExtResource("1_simple")
 
 [node name="Background" type="ColorRect" parent="."]
@@ -62,18 +62,18 @@ theme_override_constants/separation = 2
 [node name="ContentContainer" type="MarginContainer" parent="Background/Border/InnerBackground/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 15
 
 [node name="ContentLabel" type="Label" parent="Background/Border/InnerBackground/VBoxContainer/ContentContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "Dialog text will appear here..."
-autowrap_mode = 2
-vertical_alignment = 1
+autowrap_mode = 3
+vertical_alignment = 0
 
 [node name="Footer" type="MarginContainer" parent="Background/Border/InnerBackground/VBoxContainer"]
 layout_mode = 2

@@ -3,28 +3,54 @@ extends Node
 @onready var dialog_scene = preload("res://SimpleDialog.tscn")
 var current_dialog = null
 
-# Safety tips for different items
+# Safety tips for different assets
 var safety_tips = {
-	"phone": "Keep your phone charged and have a backup power source. Store emergency contacts and download offline maps.",
-	"battery": "Always keep extra batteries for flashlights and radios. Check expiration dates regularly.",
-	"powerbank": "Keep power banks fully charged as backup power sources for essential devices during outages.",
-	"flashlight": "Keep a working flashlight ready at all times. Check batteries regularly. Avoid using candles during storms.",
-	"documents": "Store important documents like IDs and certificates in waterproof containers or bags.",
-	"water_bottle": "Store clean bottled water for drinking. You need at least 1 gallon per person per day for 3 days.",
-	"canned_food": "Stock up on non-perishable food like canned goods that don't need cooking. Include a manual can opener.",
-	"medicine_2": "Keep a well-stocked first aid kit and essential medications. Check expiration dates regularly.",
-	"medicine_3": "Store prescription medications in waterproof containers. Keep a list of all medications and dosages.",
-	"first_aid_kit": "Maintain a complete first aid kit with bandages, antiseptics, and basic medical supplies.",
-	"go_bag": "Prepare an emergency bag with water, food, medicine, flashlight, batteries, and important documents.",
-	"candle": "Avoid using candles during storms - use battery-powered lights instead to prevent fire hazards."
+	"window": "Stay away from windows during a typhoon. Strong winds can shatter glass or blow debris inside, so it's safest to stay in the inner part of the house.",
+	"tv": "Always monitor weather updates from PAGASA, NDRRMC, or local news for safety alerts and evacuation instructions.",
+	"fuse_box": "During a typhoon, turn off the main power switch if flooding begins or there's frequent lightning. This helps prevent electrical shocks and fire hazards. Stay dry and use a flashlight instead of touching any wet electrical parts.",
+	"go_bag": "Prepare a Go Bag with water, food, medicine, flashlight, batteries, and important documents for quick evacuation.",
+	"candle": "Avoid using candles during a typhoon. Use a flashlight or battery-powered lamp to prevent fire accidents.",
+	"flashlight": "Keep a working flashlight ready at all times. Check batteries regularly. Avoid using candles.",
+	"battery": "Always prepare an extra batteries for your flashlight incase the power outage last long.",
+	"documents": "Store important documents like IDs and certificates in waterproof containers",
+	"canned_food": "Stock up on non-perishable food like canned goods that don't need cooking.",
+	"bottled_water": "During typhoons, tap water can become unsafe to drink. Store clean bottled water ahead of time for drinking and basic needs.",
+	"first_aid_kit": "Keep a complete first aid kit in a waterproof container for injuries or emergencies if you have one.",
+	"medicine_2": "Always keep antibiotics and prescribed medicines incase you need them during typhoon.",
+	"medicine_3": "Always include basic medicine for pain, fever, or colds in your emergency supplies.",
+	"mobile_phone": "Keep your mobile phone charged and nearby during a typhoon for emergency alerts and communication. Save battery by using it only when needed.",
+	"power_bank": "Keep a fully charged power bank ready before the storm. It's essential for communication when electricity is down.",
+	"bucket": "• Store clean water in buckets before a typhoon in case water supply gets cut off\n• Collect rainwater during the storm for non-drinking purposes\n• Keep containers covered to prevent contamination",
+	"e_fan": "ELECTRICAL SAFETY TIPS:\n• Check cords for damage before use\n• Keep electrical devices away from water\n• Don't overload electrical outlets\n• Have backup power sources ready\n• Know how to shut off main electrical breaker",
+	"frying_pan": "COOKING SAFETY TIPS:\n• Never leave cooking unattended\n• Keep pot handles turned inward\n• Have a fire extinguisher nearby\n• Know how to turn off gas/electricity quickly\n• Keep flammable items away from heat sources"
 }
+
+func show_safety_tips(asset_type: String, position: Vector2):
+	print("SimpleDialogManager.show_safety_tips called for: ", asset_type)
+	
+	# Close existing dialog if any
+	if current_dialog:
+		if is_instance_valid(current_dialog):
+			current_dialog.queue_free()
+		current_dialog = null
+	
+	# Get safety tip for this asset
+	var tip = safety_tips.get(asset_type, "No safety information available for this item.")
+	
+	# Create and show dialog
+	current_dialog = dialog_scene.instantiate()
+	get_tree().root.add_child(current_dialog)
+	current_dialog.show_dialog(tip, position)
+	
+	print("Safety tips dialog created and shown")
 
 func show_item_dialog(item_name: String, position: Vector2):
 	print("SimpleDialogManager.show_item_dialog called for: ", item_name)
 	
 	# Close existing dialog if any
 	if current_dialog:
-		current_dialog.queue_free()
+		if is_instance_valid(current_dialog):
+			current_dialog.queue_free()
 		current_dialog = null
 	
 	# Get safety tip for this item
@@ -41,5 +67,6 @@ func show_item_dialog(item_name: String, position: Vector2):
 func hide_current_dialog():
 	if current_dialog:
 		current_dialog.hide_dialog()
-		current_dialog.queue_free()
+		if is_instance_valid(current_dialog):
+			current_dialog.queue_free()
 		current_dialog = null

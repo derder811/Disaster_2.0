@@ -12,6 +12,7 @@ const PADDING = 32  # Extra padding for comfortable reading
 var text = ""
 var letter_index = 0
 var is_text_complete = false
+var is_being_freed = false  # Flag to prevent multiple queue_free calls
 
 var letter_time = 0.005  # Much faster - was 0.02
 var space_time = 0.01    # Much faster - was 0.04
@@ -96,8 +97,9 @@ func _ready():
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_SPACE and is_text_complete:
+		if event.keycode == KEY_SPACE and is_text_complete and not is_being_freed:
 			print("Spacebar pressed - closing text box")
+			is_being_freed = true
 			queue_free()
 
 func _show_safety_tips_dialog():
@@ -106,7 +108,9 @@ func _show_safety_tips_dialog():
 	# Only show dialog if there's a valid asset type
 	if current_asset_type == "":
 		print("No asset type set - closing text box without showing dialog")
-		queue_free()
+		if not is_being_freed:
+			is_being_freed = true
+			queue_free()
 		return
 	
 	# Find the DialogBox node in the scene
@@ -119,7 +123,9 @@ func _show_safety_tips_dialog():
 		print("DialogBox not found or doesn't have show_dialog method")
 	
 	# Close the text box after showing safety tips
-	queue_free()
+	if not is_being_freed:
+		is_being_freed = true
+		queue_free()
 
 func display_text(text_to_display: String):
 	print("display_text called with: ", text_to_display)
