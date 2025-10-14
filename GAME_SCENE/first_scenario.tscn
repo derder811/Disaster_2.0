@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=4 uid="uid://dm8t7wtfh4fs6"]
+[gd_scene load_steps=90 format=4 uid="uid://dm8t7wtfh4fs6"]
 
 [ext_resource type="Texture2D" uid="uid://dt10x42mxphse" path="res://asset/Concrete.png" id="1_nj8df"]
 [ext_resource type="Texture2D" uid="uid://ex6vuokpyrv4" path="res://asset/Wall.png" id="2_1fdyj"]
@@ -2276,9 +2276,11 @@ radius = 4.74548
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gwr65"]
 radius = 3.3896
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fblfa"]
-radius = 7.11816
-height = 106.502
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g8avo"]
+size = Vector2(17.4571, 37.8037)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p8a1h"]
+height = 104.617
 
 [node name="Game" type="Node2D"]
 position = Vector2(237, 166)
@@ -2581,10 +2583,15 @@ scale = Vector2(0.0527868, 0.0615003)
 texture = ExtResource("58_x4j5f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fuse Box"]
-position = Vector2(-0.338959, 39.1137)
-shape = SubResource("CapsuleShape2D_fblfa")
+position = Vector2(-1.0173, 6.59794)
+shape = SubResource("RectangleShape2D_g8avo")
 
 [node name="InteractionArea" parent="Fuse Box" instance=ExtResource("2_nfq5s")]
+position = Vector2(0.677507, 4.2417)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Fuse Box/InteractionArea"]
+position = Vector2(-1.01688, 26.8612)
+shape = SubResource("CapsuleShape2D_p8a1h")
 
 [node name="Player" type="Node2D" parent="."]
 position = Vector2(79, -121)
