@@ -26,7 +26,19 @@ var self_talk_messages = {
 		"Knowledge about disaster preparedness is really valuable.",
 		"I'm getting better at identifying safety hazards and solutions.",
 		"There's always more to learn about staying safe during disasters."
-	] as Array[String]
+	] as Array[String],
+	"item_pickup": {
+		"flashlight": "Good thing the flashlight still works. This will help if the power's out for long.",
+		"battery": "Extra batteries—perfect. I'll save these for the flashlight.",
+		"documents": "These documents are important... Gonna keep them on my bag",
+		"canned_food": "Good thing there are still some canned foods left.",
+		"water_bottle": "I'll keep these bottled waters ready... the tap might get contaminated later.",
+		"medkit": "Good.. Everything's here — bandages, alcohol, medicine.",
+		"medicine_2": "Good thing I still have some antibiotics left... just in case anyone gets an infection after the storm.",
+		"medicine_3": "Painkillers and cold meds, these might come in handy if anyone feels sick.",
+		"mobile_phone": "Signal's weak... I'll keep my phone on me, just in case of any emergency or updates.",
+		"powerbank": "This power bank will be useful to keep my phone charged during emergencies."
+	}
 }
 
 var has_shown_startup_message = false
@@ -189,3 +201,29 @@ func trigger_self_talk(message_type: String = "after_interaction"):
 				dialog_position = player.global_position + Vector2(0, -100)
 			
 			DialogManager.start_dialog(dialog_position, [random_message])
+
+# Function to trigger item pickup self-talk
+func trigger_item_pickup_self_talk(item_name: String):
+	if "item_pickup" in self_talk_messages and item_name in self_talk_messages["item_pickup"]:
+		var message = self_talk_messages["item_pickup"][item_name]
+		
+		if player and is_instance_valid(player):
+			# Get the player's sprite for accurate text positioning
+			var sprite = player.get_node_or_null("Sprite2D")
+			var dialog_position = player.global_position
+			
+			if sprite:
+				# Calculate the top of the sprite by using the sprite's global position
+				# and accounting for its texture height
+				var sprite_global_pos = player.to_global(sprite.position)
+				var texture_height = 0
+				if sprite.texture:
+					texture_height = sprite.texture.get_height() * sprite.scale.y
+				
+				# Position text above the sprite's top edge
+				dialog_position = Vector2(sprite_global_pos.x, sprite_global_pos.y - texture_height/2 - 50)
+			else:
+				# Fallback: position above player center
+				dialog_position = player.global_position + Vector2(0, -100)
+			
+			DialogManager.start_dialog(dialog_position, [message])

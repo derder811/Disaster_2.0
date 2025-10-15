@@ -2608,4 +2608,4 @@ remote_path = NodePath("../../../Camera2D")
 position = Vector2(79.3167, -136.662)
 
 [node name="GoBag" parent="." instance=ExtResource("67_gobag")]
-position = Vector2(279.981, 183.316)
+position = Vector2(241.34, -142.788)

@@ -82,6 +82,8 @@ func pickup_item():
 		# Show self-talk about the medicine's purpose
 		show_item_self_talk()
 		
+		# Wait for self-talk to complete before destroying the item
+		await get_tree().create_timer(4.0).timeout
 		queue_free()
 	else:
 		print("✗ ERROR: Player doesn't have get_items method!")
@@ -89,3 +91,9 @@ func pickup_item():
 func show_item_self_talk():
 	# Use SimpleDialogManager to show safety tips
 	SimpleDialogManager.show_item_dialog("medicine_2", global_position)
+	
+	# Trigger self-talk using the self-talk system after a brief delay
+	await get_tree().create_timer(2.0).timeout
+	var self_talk_system = get_tree().get_first_node_in_group("self_talk_system")
+	if self_talk_system and self_talk_system.has_method("trigger_item_pickup_self_talk"):
+		self_talk_system.trigger_item_pickup_self_talk("medicine_2")
