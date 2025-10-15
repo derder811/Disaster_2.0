@@ -88,4 +88,4 @@ func pickup_item():
 
 func show_item_self_talk():
 	# Use SimpleDialogManager to show safety tips
-	SimpleDialogManager.show_item_dialog("phone", global_position)
+	SimpleDialogManager.show_item_dialog("mobile_phone", global_position)

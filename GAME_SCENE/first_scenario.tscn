@@ -56,11 +56,11 @@
 [ext_resource type="Texture2D" uid="uid://pndis1746vld" path="res://asset/Furnitures/Water Bottle.png" id="54_0enws"]
 [ext_resource type="Texture2D" uid="uid://7ynnxc5s4lk0" path="res://asset/Furnitures/Canned Goods.png" id="55_7uoav"]
 [ext_resource type="Texture2D" uid="uid://bb32wm3htwow4" path="res://asset/Furnitures/Phone.png" id="56_xra17"]
-[ext_resource type="Texture2D" uid="uid://c5qxmr0mctykj" path="res://asset/Furnitures/Powerbank.png" id="57_rq826"]
 [ext_resource type="Texture2D" uid="uid://drfk8heb82spm" path="res://asset/Furnitures/Fuse Box 2.png" id="58_x4j5f"]
 [ext_resource type="Script" uid="uid://cuks18hovdq8t" path="res://phone.gd" id="59_phone"]
 [ext_resource type="Script" uid="uid://6bn127b5xfm7" path="res://battery_pickup.gd" id="60_battery"]
 [ext_resource type="Script" uid="uid://caxxk6g75lr1u" path="res://documents.gd" id="61_documents"]
+[ext_resource type="Texture2D" uid="uid://bivwi22cmbctx" path="res://asset/Furnitures/Power Bank (New).png" id="61_g8avo"]
 [ext_resource type="Script" uid="uid://6iatfis6b7q5" path="res://medicine_3.gd" id="62_medicine3"]
 [ext_resource type="Script" uid="uid://ptmj7wtu8n5s" path="res://powerbank.gd" id="63_powerbank"]
 [ext_resource type="Script" uid="uid://dm4uqsk03uoco" path="res://water_bottle.gd" id="64_waterbottle"]
@@ -2565,12 +2565,12 @@ collision_mask = 2
 script = ExtResource("63_powerbank")
 
 [node name="Sprite2D" type="Sprite2D" parent="Power Bank"]
-position = Vector2(0.677919, 0.471237)
-scale = Vector2(0.101043, 0.164402)
-texture = ExtResource("57_rq826")
+position = Vector2(1.35582, -2.82742)
+scale = Vector2(0.00924076, 0.0156695)
+texture = ExtResource("61_g8avo")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Power Bank"]
-position = Vector2(0, -1.90735e-06)
+position = Vector2(1.01686, 0.942568)
 shape = SubResource("CapsuleShape2D_gwr65")
 
 [node name="Fuse Box" type="StaticBody2D" parent="."]

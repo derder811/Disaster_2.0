@@ -14,10 +14,23 @@ var self_talk_messages = {
 		"I'm learning so much about disaster preparedness.",
 		"These safety measures could save lives in a real disaster.",
 		"I should share this knowledge with my family and friends."
+	] as Array[String],
+	"timer_based": [
+		"I wonder what other safety measures I should check around here...",
+		"It's important to be prepared for disasters like typhoons.",
+		"I should explore more areas to learn about emergency preparedness.",
+		"Every household should have proper disaster preparation.",
+		"Let me see what other safety tips I can discover.",
+		"Being prepared can make all the difference in an emergency.",
+		"I should remember to check all the important safety items.",
+		"Knowledge about disaster preparedness is really valuable.",
+		"I'm getting better at identifying safety hazards and solutions.",
+		"There's always more to learn about staying safe during disasters."
 	] as Array[String]
 }
 
 var has_shown_startup_message = false
+var timer_self_talk_active = false
 @onready var player = get_parent()
 
 func _ready():
@@ -27,6 +40,52 @@ func _ready():
 	# Wait a moment for the scene to fully load, then show startup message
 	await get_tree().create_timer(1.0).timeout
 	show_startup_message()
+	
+	# Start the timer-based self talk after startup
+	await get_tree().create_timer(2.0).timeout
+	start_timer_self_talk()
+
+func start_timer_self_talk():
+	timer_self_talk_active = true
+	_timer_self_talk_loop()
+
+func stop_timer_self_talk():
+	timer_self_talk_active = false
+
+func _timer_self_talk_loop():
+	while timer_self_talk_active:
+		await get_tree().create_timer(10.0).timeout  # Wait 10 seconds
+		
+		if timer_self_talk_active and player and is_instance_valid(player):
+			# Check if there's no active dialog before showing timer-based self talk
+			if not DialogManager.is_dialog_active:
+				show_timer_self_talk()
+
+func show_timer_self_talk():
+	# Get a random timer-based self-talk message
+	var messages = self_talk_messages["timer_based"]
+	var random_message = messages[randi() % messages.size()]
+	
+	if player and is_instance_valid(player):
+		# Get the player's sprite for accurate text positioning
+		var sprite = player.get_node_or_null("Sprite2D")
+		var dialog_position = player.global_position
+		
+		if sprite:
+			# Calculate the top of the sprite by using the sprite's global position
+			# and accounting for its texture height
+			var sprite_global_pos = player.to_global(sprite.position)
+			var texture_height = 0
+			if sprite.texture:
+				texture_height = sprite.texture.get_height() * sprite.scale.y
+			
+			# Position text above the sprite's top edge
+			dialog_position = Vector2(sprite_global_pos.x, sprite_global_pos.y - texture_height/2 - 50)
+		else:
+			# Fallback: position above player center
+			dialog_position = player.global_position + Vector2(0, -100)
+		
+		DialogManager.start_dialog(dialog_position, [random_message])
 
 func show_startup_message():
 	if has_shown_startup_message:

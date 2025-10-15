@@ -4,8 +4,8 @@ extends StaticBody2D
 @onready var sprite = $Sprite2D
 
 const lines: Array[String] = [
-	"The rain's starting to get heavier... I have to cut the power to avoid short circuits or getting electrocuted if the water rises, especially when the thunder strikes.",
-	"During a typhoon, turn off the main power switch if flooding begins or there's frequent lightning. This helps prevent electrical shocks and fire hazards. Stay dry and use a flashlight instead of touching any wet electrical parts."
+	"The rain's starting to get heavier... I have to cut the power to avoid short circuits or getting electrocuted \n if the water rises, especially when the thunder strikes.",
+	
 ]
 
 func _ready():
@@ -34,6 +34,10 @@ func _on_interact():
 		# Use the new DialogManager autoload with asset type for safety tips
 		var dialog_position = global_position + Vector2(0, -50)  # Position dialog above fuse box
 		DialogManager.start_dialog(dialog_position, lines, "fuse_box")
+		
+		# Show SimpleDialog safety tips after text box finishes (delay for text box to complete)
+		await get_tree().create_timer(5.0).timeout  # Wait for text box to finish
+		SimpleDialogManager.show_safety_tips("fuse_box", global_position)
 		
 		# Complete the quest objective for fuse box interaction
 		var quest_node = get_node("../Quest")

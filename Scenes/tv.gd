@@ -4,8 +4,7 @@ extends StaticBody2D
 @onready var sprite = $Sprite2D
 
 const lines: Array[String] = [
-	"It's raining nonstop... I'll check the news to see if there's a typhoon signal in our area.",
-	"Always monitor weather updates from PAGASA, NDRRMC, or local news for safety alerts and evacuation instructions."
+	"It's raining nonstop... I'll check the news to see if there's a typhoon signal in our area.",	
 ]
 
 func _ready():
@@ -35,12 +34,16 @@ func _on_interact():
 		var dialog_position = global_position + Vector2(0, -50)  # Position dialog above TV
 		DialogManager.start_dialog(dialog_position, lines, "tv")
 		
+		# Show SimpleDialog safety tips after text box finishes (delay for text box to complete)
+		await get_tree().create_timer(5.0).timeout  # Wait for text box to finish
+		SimpleDialogManager.show_safety_tips("tv", global_position)
+		
 		# Complete the quest objective for TV interaction
-		var quest_node = get_node("../../Quest")
+		var quest_node = get_node("../Quest")
 		if quest_node and quest_node.has_method("on_tv_interaction"):
 			quest_node.on_tv_interaction()
 			print("TV: Quest objective completed!")
 		
-		print("TV: Typhoon monitoring tip shown!")
+		print("TV: Weather safety tip shown!")
 	else:
 		print("TV: No overlapping bodies found!")

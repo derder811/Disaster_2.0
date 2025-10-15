@@ -75,7 +75,7 @@ shape = SubResource("RectangleShape2D_tg7ok")
 
 [node name="InteractionArea" parent="." instance=ExtResource("2_nfq5s")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="InteractionArea"]
 position = Vector2(-1, 542)
 scale = Vector2(17.4912, 11.1331)
 shape = SubResource("CapsuleShape2D_nfq5s")

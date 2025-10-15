@@ -25,6 +25,6 @@ shape = SubResource("CircleShape2D_ymkvi")
 [node name="InteractionArea" parent="." instance=ExtResource("2_m1vr3")]
 position = Vector2(-3.69144, 1.2901)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="InteractionArea"]
 position = Vector2(4.69144, -1.2901)
 shape = SubResource("CircleShape2D_nj8df")

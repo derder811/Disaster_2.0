@@ -4,8 +4,7 @@ extends StaticBody2D
 @onready var sprite = $AnimatedSprite2D
 
 const lines: Array[String] = [
-	"It's raining hard... I should check the television to see if there's a typhoon warning.",
-	"Stay away from windows during a typhoon. Strong winds can shatter glass or blow debris inside, so it's safest to stay in the inner part of the house."
+	"It's raining hard... I should check the television to see if there's a typhoon warning.",	
 ]
 
 func _ready():
@@ -21,6 +20,10 @@ func _on_interact():
 		# Use the new DialogManager autoload with asset type for safety tips
 		var dialog_position = global_position + Vector2(0, -50)  # Position dialog above window
 		DialogManager.start_dialog(dialog_position, lines, "window")
+		
+		# Show SimpleDialog safety tips after text box finishes (delay for text box to complete)
+		await get_tree().create_timer(5.0).timeout  # Wait for text box to finish
+		SimpleDialogManager.show_safety_tips("window", global_position)
 		
 		# Complete the quest objective for window interaction
 		var quest_node = get_node("../Quest")
