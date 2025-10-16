@@ -66,8 +66,8 @@ func show_game_over_animation():
 		
 		# Fade in and scale up with bounce
 		tween.tween_property(menu_button, "modulate:a", 1.0, 0.6).set_delay(1.5)
-		tween.tween_property(menu_button, "scale", Vector2(1.1, 1.1), 0.4).set_delay(1.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-		tween.tween_property(menu_button, "scale", Vector2(1.0, 1.0), 0.2).set_delay(1.9)
+		tween.tween_property(menu_button, "scale", Vector2(0.17, 0.17), 0.4).set_delay(1.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+		tween.tween_property(menu_button, "scale", Vector2(0.15, 0.15), 0.2).set_delay(1.9)
 		
 		# Rotate to normal position
 		tween.tween_property(menu_button, "rotation", 0.0, 0.5).set_delay(1.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
@@ -93,8 +93,8 @@ func start_button_idle_animation():
 	# Add subtle scale pulsing
 	var scale_tween = create_tween()
 	scale_tween.set_loops()
-	scale_tween.tween_property(menu_button, "scale", Vector2(1.02, 1.02), 1.5).set_ease(Tween.EASE_IN_OUT)
-	scale_tween.tween_property(menu_button, "scale", Vector2(1.0, 1.0), 1.5).set_ease(Tween.EASE_IN_OUT)
+	scale_tween.tween_property(menu_button, "scale", Vector2(0.153, 0.153), 1.5).set_ease(Tween.EASE_IN_OUT)
+	scale_tween.tween_property(menu_button, "scale", Vector2(0.15, 0.15), 1.5).set_ease(Tween.EASE_IN_OUT)
 
 func _on_menu_button_hover():
 	"""Handle mouse hover over button"""
@@ -110,7 +110,7 @@ func _on_menu_button_hover():
 	button_hover_tween.set_parallel(true)
 	
 	# Scale up and brighten
-	button_hover_tween.tween_property(menu_button, "scale", Vector2(1.1, 1.1), 0.2).set_ease(Tween.EASE_OUT)
+	button_hover_tween.tween_property(menu_button, "scale", Vector2(0.165, 0.165), 0.2).set_ease(Tween.EASE_OUT)
 	button_hover_tween.tween_property(menu_button, "modulate", Color(1.2, 1.2, 1.2, 1.0), 0.2)
 	
 	# Add subtle rotation wiggle
@@ -129,9 +129,8 @@ func _on_menu_button_unhover():
 	
 	# Return to normal state
 	var unhover_tween = create_tween()
-	unhover_tween.set_parallel(true)
 	
-	unhover_tween.tween_property(menu_button, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_OUT)
+	unhover_tween.tween_property(menu_button, "scale", Vector2(0.15, 0.15), 0.2).set_ease(Tween.EASE_OUT)
 	unhover_tween.tween_property(menu_button, "modulate", Color.WHITE, 0.2)
 	unhover_tween.tween_property(menu_button, "rotation", 0.0, 0.2)
 	
@@ -179,9 +178,9 @@ func animate_button_press():
 	button_tween.set_parallel(true)
 	
 	# Enhanced press animation - scale down more dramatically
-	button_tween.tween_property(menu_button, "scale", Vector2(0.85, 0.85), 0.1).set_ease(Tween.EASE_OUT)
-	button_tween.tween_property(menu_button, "scale", Vector2(1.15, 1.15), 0.15).set_delay(0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	button_tween.tween_property(menu_button, "scale", Vector2(1.0, 1.0), 0.1).set_delay(0.25)
+	button_tween.tween_property(menu_button, "scale", Vector2(0.128, 0.128), 0.1).set_ease(Tween.EASE_OUT)
+	button_tween.tween_property(menu_button, "scale", Vector2(0.173, 0.173), 0.15).set_delay(0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	button_tween.tween_property(menu_button, "scale", Vector2(0.15, 0.15), 0.1).set_delay(0.25)
 	
 	# Enhanced flash effect with color cycling
 	button_tween.tween_property(menu_button, "modulate", Color(2.0, 1.5, 0.5, 1.0), 0.1)  # Golden flash
