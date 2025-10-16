@@ -25,7 +25,8 @@ var self_talk_messages = {
 		"medicine_3": "Painkillers and cold meds, these might come in handy if anyone feels sick.",
 		"mobile_phone": "Signal's weak... I'll keep my phone on me, just in case of any emergency or updates.",
 		"powerbank": "This power bank will be useful to keep my phone charged during emergencies.",
-		"go_bag": "Gonna find some food, water, and medicine… anything essential before things get worse."
+		"go_bag": "Gonna find some food, water, and medicine… anything essential before things get worse.",
+		"candle": "I'll use this if the power goes out... but maybe a flashlight is safer. I don't want to cause a fire."
 	}
 }
 

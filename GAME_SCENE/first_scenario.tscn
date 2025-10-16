@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=4 uid="uid://dm8t7wtfh4fs6"]
+[gd_scene load_steps=92 format=4 uid="uid://dm8t7wtfh4fs6"]
 
 [ext_resource type="Texture2D" uid="uid://dt10x42mxphse" path="res://asset/Concrete.png" id="1_nj8df"]
 [ext_resource type="Texture2D" uid="uid://ex6vuokpyrv4" path="res://asset/Wall.png" id="2_1fdyj"]
@@ -68,6 +68,7 @@
 [ext_resource type="Script" uid="uid://daft2qdx3cqdd" path="res://canned_i_tem.gd" id="65_cannedfood"]
 [ext_resource type="Script" uid="uid://bnhogjkcy7e0f" path="res://fuse_box.gd" id="66_fusebox"]
 [ext_resource type="PackedScene" uid="uid://clx6n61t3wwpa" path="res://go_bag.tscn" id="67_gobag"]
+[ext_resource type="PackedScene" uid="uid://c5hgk0atpn0p2" path="res://candle.tscn" id="70_ac53u"]
 [ext_resource type="PackedScene" uid="uid://cjtfeqjgwd35q" path="res://asset/Interaction/InteractionManager.tscn" id="interaction_manager"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1nj8df"]
@@ -2284,7 +2285,7 @@ size = Vector2(17.4571, 37.8037)
 height = 104.617
 
 [node name="Game" type="Node2D"]
-position = Vector2(237, 166)
+position = Vector2(239, 166)
 scale = Vector2(2.9502, 2.12202)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -2506,17 +2507,17 @@ position = Vector2(0.677917, 22.1487)
 shape = SubResource("CapsuleShape2D_0enws")
 
 [node name="Documents" type="Area2D" parent="."]
-position = Vector2(215.579, 332.231)
+position = Vector2(205.071, 329.874)
 collision_mask = 2
 script = ExtResource("61_documents")
 
 [node name="Sprite2D" type="Sprite2D" parent="Documents"]
-position = Vector2(-7.21216e-06, 2.35624)
+position = Vector2(0.677913, 7.06873)
 scale = Vector2(0.0195073, 0.0279892)
 texture = ExtResource("53_10f7w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Documents"]
-position = Vector2(-8.34465e-07, 10.3675)
+position = Vector2(0.677919, 8.01123)
 shape = SubResource("CapsuleShape2D_7uoav")
 
 [node name="Water Bottle" type="Area2D" parent="."]
@@ -2612,3 +2613,6 @@ position = Vector2(84.4011, -99.4335)
 
 [node name="GoBag" parent="." instance=ExtResource("67_gobag")]
 position = Vector2(241.34, -142.788)
+
+[node name="candle" parent="." instance=ExtResource("70_ac53u")]
+position = Vector2(232.527, 333.173)

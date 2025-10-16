@@ -9,7 +9,7 @@ var safety_tips = {
 	"tv": "Always monitor weather updates from PAGASA, NDRRMC, or local news for safety alerts and evacuation \n instructions.",
 	"fuse_box": "During a typhoon, turn off the main power switch if flooding begins or there's frequent lightning. This \n helps prevent electrical shocks and fire hazards. Stay dry and use a flashlight instead of touching any wet \n electrical parts.",
 	"go_bag": "Prepare a Go Bag with water, food, medicine, flashlight, batteries, and important documents for quick evacuation.",
-	"candle": "Avoid using candles during a typhoon. Use a flashlight or battery-powered lamp to prevent fire accidents.",
+	"candle": "Avoid using candles during a typhoon. Use a flashlight or battery-powered lamp to prevent fire accidents.\n\nStore important documents like IDs and certificates in waterproof containers.",
 	"flashlight": "Keep a working flashlight ready at all times. Check batteries regularly. Avoid using candles.",
 	"battery": "Always prepare an extra batteries for your flashlight incase the power outage last long.",
 	"documents": "Store important documents like IDs and certificates in waterproof containers",
