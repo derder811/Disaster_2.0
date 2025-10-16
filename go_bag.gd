@@ -93,10 +93,7 @@ func pickup_item():
 		# Set the global flag that the go bag has been picked up
 		GameState.set_go_bag_picked_up()
 		
-		# Show tip dialog for go bag
-		SimpleDialogManager.show_item_dialog("go_bag", global_position)
-		
-		# Show self-talk about the go bag
+		# Show self-talk about the go bag first
 		show_item_self_talk()
 		
 		# Hide the pickup prompt after interaction
@@ -104,17 +101,18 @@ func pickup_item():
 			pickup_prompt.visible = false
 
 func show_item_self_talk():
-	# Wait for the dialog to finish, then trigger self-talk
-	await get_tree().create_timer(2.0).timeout
-	
-	# Trigger self-talk for this specific item
+	# Trigger self-talk first using the self-talk system
 	var self_talk_nodes = get_tree().get_nodes_in_group("self_talk_system")
 	if self_talk_nodes.size() > 0:
 		var self_talk_system = self_talk_nodes[0]
 		if self_talk_system.has_method("trigger_item_pickup_self_talk"):
 			self_talk_system.trigger_item_pickup_self_talk("go_bag")
 	
-	# Wait for self-talk to complete before destroying the item
+	# Show SimpleDialogManager safety tips after 3 seconds
+	await get_tree().create_timer(3.0).timeout
+	SimpleDialogManager.show_item_dialog("go_bag", global_position)
+	
+	# Wait for dialog to complete before destroying the item
 	await get_tree().create_timer(4.0).timeout
 	queue_free()
 

@@ -95,11 +95,11 @@ func pickup_item():
 		print("✗ ERROR: Player doesn't have get_items method!")
 
 func show_item_self_talk():
-	# Use SimpleDialogManager to show safety tips
-	SimpleDialogManager.show_item_dialog("battery", global_position)
-	
-	# Trigger self-talk using the self-talk system after a brief delay
-	await get_tree().create_timer(2.0).timeout
+	# Trigger self-talk first using the self-talk system
 	var self_talk_system = get_tree().get_first_node_in_group("self_talk_system")
 	if self_talk_system and self_talk_system.has_method("trigger_item_pickup_self_talk"):
 		self_talk_system.trigger_item_pickup_self_talk("battery")
+	
+	# Show SimpleDialogManager safety tips after 3 seconds
+	await get_tree().create_timer(3.0).timeout
+	SimpleDialogManager.show_item_dialog("battery", global_position)
