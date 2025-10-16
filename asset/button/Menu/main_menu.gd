@@ -4,6 +4,10 @@ extends Control
 var original_scales = {}
 var is_transitioning = false
 
+# Title animation variables
+@onready var title_label = $Label
+var title_tween: Tween
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Store original button scales
@@ -26,12 +30,59 @@ func _ready():
 	
 	# Fade in animation for the menu
 	_fade_in_menu()
+	
+	# Start title animations
+	_start_title_animations()
 
 # Fade in animation when menu appears
 func _fade_in_menu():
 	modulate.a = 0.0
 	var fade_tween = create_tween()
 	fade_tween.tween_property(self, "modulate:a", 1.0, 0.8)
+
+# Title animations
+func _start_title_animations():
+	if not title_label:
+		return
+	
+	# Initial fade in for title with delay using timer
+	title_label.modulate.a = 0.0
+	
+	# Wait for the delay, then start the fade in
+	await get_tree().create_timer(0.3).timeout
+	
+	var title_fade_tween = create_tween()
+	title_fade_tween.tween_property(title_label, "modulate:a", 1.0, 1.2)
+	
+	# Wait for fade in to complete, then start floating animation
+	await title_fade_tween.finished
+	_start_title_floating_animation()
+
+func _start_title_floating_animation():
+	if not title_label:
+		return
+	
+	# Create a subtle floating animation
+	title_tween = create_tween()
+	title_tween.set_loops()  # Infinite loop
+	title_tween.set_parallel(true)
+	
+	# Floating up and down motion
+	var original_y = title_label.position.y
+	title_tween.tween_method(_update_title_float, 0.0, 1.0, 3.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+	
+	# Subtle scale pulsing
+	title_tween.tween_method(_update_title_pulse, 0.0, 1.0, 4.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+
+func _update_title_float(progress: float):
+	if title_label:
+		var float_offset = sin(progress * PI * 2) * 8.0  # 8 pixels up and down
+		title_label.position.y = 50.0 + float_offset
+
+func _update_title_pulse(progress: float):
+	if title_label:
+		var pulse_scale = 1.0 + sin(progress * PI * 2) * 0.02  # Subtle 2% scale change
+		title_label.scale = Vector2(pulse_scale, pulse_scale)
 
 # Button hover animation
 func _on_button_hover(button_name: String):
