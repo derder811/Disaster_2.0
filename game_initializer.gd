@@ -67,12 +67,6 @@ func show_self_talk_message():
 		var dialog_position = sprite_position + Vector2(0, -80)
 		DialogManager.start_dialog(dialog_position, [random_message])
 
-# Function to be called after object interactions
-func show_post_interaction_self_talk():
-	# Wait a moment after interaction completes
-	await get_tree().create_timer(1.5).timeout
-	show_self_talk_message()
-
 # Function to connect to interaction events
 func setup_interaction_callbacks():
 	# This will be called to set up callbacks for object interactions

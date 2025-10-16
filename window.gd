@@ -25,6 +25,14 @@ func _on_interact():
 		await get_tree().create_timer(5.0).timeout  # Wait for text box to finish
 		SimpleDialogManager.show_safety_tips("window", global_position)
 		
+		# Trigger self-talk after interaction
+		await get_tree().create_timer(2.0).timeout
+		var self_talk_nodes = get_tree().get_nodes_in_group("self_talk_system")
+		if self_talk_nodes.size() > 0:
+			var self_talk_system = self_talk_nodes[0]
+			if self_talk_system.has_method("trigger_custom_self_talk"):
+				self_talk_system.trigger_custom_self_talk("I have to check the TV… maybe there's news about the typhoon.")
+		
 		# Complete the quest objective for window interaction
 		var quest_node = get_node("../Quest")
 		if quest_node and quest_node.has_method("on_window_interaction"):

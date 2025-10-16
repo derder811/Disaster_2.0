@@ -251,6 +251,11 @@ func get_items(itemData):
 		else:
 			print("  - Bag exists but missing get_items method")
 
+# Function to add items to inventory (alias for get_items for compatibility)
+func add_item_to_inventory(itemData):
+	print("=== ADD_ITEM_TO_INVENTORY CALLED ===")
+	get_items(itemData)
+
 func interact_with_door(door):
 	print("Opening/closing door: ", door.name)
 	# Example: toggle door state

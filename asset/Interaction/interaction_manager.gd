@@ -65,19 +65,20 @@ func _process(delta):
 		active_areas.sort_custom(sort_by_distance_to_player)
 		
 		# Show the interaction prompt for the closest area
-		var closest_area = active_areas[0]
-		if closest_area and is_instance_valid(closest_area):
-			label.text = BASE_TEXT + closest_area.action_name
-			label.visible = true
+		if active_areas.size() > 0:  # Additional safety check
+			var closest_area = active_areas[0]
+			if closest_area and is_instance_valid(closest_area):
+				label.text = BASE_TEXT + closest_area.action_name
+				label.visible = true
+				
+				# Position label near the interactable object instead of above the player
+				if closest_area and is_instance_valid(closest_area):
+					label.global_position = closest_area.global_position + Vector2(0, -40)
 			
-			# Position label near the interactable object instead of above the player
-			if closest_area and is_instance_valid(closest_area):
-				label.global_position = closest_area.global_position + Vector2(0, -40)
-		
-		# Only print occasionally to avoid spam
-		if Engine.get_process_frames() % 60 == 0:  # Every 60 frames (1 second at 60fps)
-			if closest_area and is_instance_valid(closest_area):
-				print("InteractionManager: Showing prompt for - ", closest_area.action_name, " at ", closest_area.global_position)
+			# Only print occasionally to avoid spam
+			if Engine.get_process_frames() % 60 == 0:  # Every 60 frames (1 second at 60fps)
+				if closest_area and is_instance_valid(closest_area):
+					print("InteractionManager: Showing prompt for - ", closest_area.action_name, " at ", closest_area.global_position)
 	else:
 		# Hide label
 		if label.visible:
@@ -87,56 +88,14 @@ func _process(delta):
 func _input(event):
 	# Check if E key is pressed
 	if event.is_action_pressed("interact") or (event is InputEventKey and event.pressed and event.keycode == KEY_E):
-		if active_areas.size() > 0:
+		if active_areas.size() > 0:  # Safety check before accessing array
 			print("InteractionManager: E key pressed, calling interact on: ", active_areas[0].action_name)
 			can_interact = false
 			label.visible = false
 			await active_areas[0].interact.call()
 			can_interact = true
-			
-			# Show automatic self-talk message after interaction
-			_show_post_interaction_self_talk()
 
-# Function to show self-talk messages after interactions
-func _show_post_interaction_self_talk():
-	# Wait a moment for any existing dialogs to finish
-	await get_tree().create_timer(2.0).timeout
-	
-	# Try to find the self-talk system in the player
-	var self_talk_system = null
-	if player:
-		self_talk_system = player.get_node_or_null("SelfTalkSystem")
-	
-	if not self_talk_system:
-		# Try to find it by group
-		var self_talk_nodes = get_tree().get_nodes_in_group("self_talk_system")
-		if self_talk_nodes.size() > 0:
-			self_talk_system = self_talk_nodes[0]
-	
-	if self_talk_system and self_talk_system.has_method("show_post_interaction_self_talk"):
-		self_talk_system.show_post_interaction_self_talk()
-	else:
-		# Fallback: show a simple self-talk message directly
-		_show_fallback_self_talk()
-
+# Function to show fallback self-talk when system is not found
 func _show_fallback_self_talk():
-	var self_talk_messages = [
-		"That was informative! I should remember these safety tips.",
-		"Good to know! This could be really useful in an emergency.",
-		"I'm learning so much about disaster preparedness.",
-		"These safety measures could save lives in a real disaster.",
-		"I should share this knowledge with my family and friends."
-	]
-	
-	var random_message = self_talk_messages[randi() % self_talk_messages.size()]
-	
-	if player and is_instance_valid(player):
-		# Get the player's sprite position for accurate text positioning
-		var sprite = player.get_node("Sprite2D")
-		var sprite_position = player.global_position
-		if sprite:
-			sprite_position = player.global_position + sprite.position
-		
-		# Position the text above the player's head (sprite top)
-		var dialog_position = sprite_position + Vector2(0, -80)
-		DialogManager.start_dialog(dialog_position, [random_message])
+	print("Self-talk system not found, showing fallback message")
+	# Could implement a simple fallback dialog here if needed
