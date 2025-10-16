@@ -14,6 +14,13 @@ var current_objective_index = 0
 var emergency_items_collected = 0
 var total_emergency_items = 9  # powerbank, phone, documents, first aid (medkit), battery, flashlight, canned food, water bottle, medicine 3
 
+# Timer variables for third quest
+var quest_timer: Timer
+var timer_duration = 90.0  # 1 minute 30 seconds
+var time_remaining = 90.0
+var is_timer_active = false
+var timer_label: Label
+
 # Reference to the bag inventory
 var bag_inventory = null
 
@@ -32,6 +39,9 @@ func _ready():
 		Engine.register_singleton("QuestManager", self)
 		print("Quest: Registered as QuestManager singleton")
 	
+	# Initialize timer for third quest
+	setup_quest_timer()
+	
 	# Find the bag inventory in the scene
 	find_bag_inventory()
 	
@@ -47,6 +57,9 @@ func _ready():
 		original_position = quest_box.position
 		hide_quest_box()
 		print("Quest: Quest box hidden initially at position: ", original_position)
+		
+		# Setup timer label
+		setup_timer_label()
 	else:
 		print("Quest: ERROR - Quest box not found!")
 	
@@ -218,6 +231,8 @@ func complete_objective(objective_name: String):
 		# For emergency items, we should complete it regardless of current_objective_index
 		if objective_name == "collect_emergency_items":
 			print("Emergency items objective completed!")
+			# Stop the timer when emergency items quest is completed
+			stop_quest_timer()
 			# Set current objective to this one if it's not already
 			if current_objective_index < 2:
 				current_objective_index = 2
@@ -229,6 +244,12 @@ func complete_objective(objective_name: String):
 			await get_tree().create_timer(1.0).timeout
 			current_objective_index += 1
 			print("Quest: Advanced to objective index ", current_objective_index)
+			
+			# Start timer when advancing to the third quest (emergency items collection)
+			if current_objective_index == 2:
+				print("Quest: Starting timer for emergency items collection")
+				start_quest_timer()
+			
 			# Update UI to show the new objective
 			update_quest_ui()
 		elif current_objective_index >= 2:
@@ -458,3 +479,143 @@ func _notification(what):
 		# Make this quest system globally accessible
 		if not Engine.has_singleton("QuestManager"):
 			Engine.register_singleton("QuestManager", self)
+
+func setup_quest_timer():
+	"""Initialize the timer for the third quest"""
+	quest_timer = Timer.new()
+	quest_timer.wait_time = 1.0  # Update every second
+	quest_timer.timeout.connect(_on_timer_timeout)
+	add_child(quest_timer)
+	print("Quest: Timer setup complete")
+
+func setup_timer_label():
+	"""Setup the timer label in the UI"""
+	if quest_box:
+		# Try to find existing timer label or create one
+		timer_label = quest_box.find_child("TimerLabel", true, false)
+		if not timer_label:
+			# Create timer label if it doesn't exist
+			timer_label = Label.new()
+			timer_label.name = "TimerLabel"
+			timer_label.text = ""
+			timer_label.add_theme_color_override("font_color", Color.RED)
+			timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			
+			# Add to quest box
+			var quest_container = quest_box.find_child("QuestContainer", true, false)
+			if quest_container:
+				quest_container.add_child(timer_label)
+				# Move timer label to top
+				quest_container.move_child(timer_label, 0)
+			else:
+				quest_box.add_child(timer_label)
+			
+			print("Quest: Created timer label")
+		else:
+			print("Quest: Found existing timer label")
+		
+		timer_label.visible = false  # Hidden initially
+
+func start_quest_timer():
+	"""Start the timer for the third quest"""
+	if quest_timer and not is_timer_active:
+		time_remaining = timer_duration
+		is_timer_active = true
+		quest_timer.start()
+		
+		# Show timer label
+		if timer_label:
+			timer_label.visible = true
+			update_timer_display()
+		
+		print("Quest: Timer started for emergency items collection (90 seconds)")
+
+func stop_quest_timer():
+	"""Stop the quest timer"""
+	if quest_timer and is_timer_active:
+		quest_timer.stop()
+		is_timer_active = false
+		
+		# Hide timer label
+		if timer_label:
+			timer_label.visible = false
+		
+		print("Quest: Timer stopped")
+
+func _on_timer_timeout():
+	"""Called every second when timer is active"""
+	if is_timer_active:
+		time_remaining -= 1.0
+		update_timer_display()
+		
+		if time_remaining <= 0:
+			# Timer expired - trigger game over
+			timer_expired()
+
+func update_timer_display():
+	"""Update the timer display in the UI"""
+	if timer_label and is_timer_active:
+		var minutes = int(time_remaining) / 60
+		var seconds = int(time_remaining) % 60
+		timer_label.text = "Time Remaining: %02d:%02d" % [minutes, seconds]
+		
+		# Change color based on remaining time
+		if time_remaining <= 30:
+			timer_label.add_theme_color_override("font_color", Color.RED)
+		elif time_remaining <= 60:
+			timer_label.add_theme_color_override("font_color", Color.ORANGE)
+		else:
+			timer_label.add_theme_color_override("font_color", Color.WHITE)
+
+func timer_expired():
+	"""Handle timer expiration - trigger game over"""
+	print("Quest: Timer expired! Game Over!")
+	stop_quest_timer()
+	
+	# Show game over message
+	show_game_over_message()
+	
+	# Wait a moment then restart the scene or show game over screen
+	await get_tree().create_timer(3.0).timeout
+	trigger_game_over()
+
+func show_game_over_message():
+	"""Show a game over message to the player"""
+	if timer_label:
+		timer_label.text = "TIME'S UP! GAME OVER!"
+		timer_label.add_theme_color_override("font_color", Color.RED)
+		
+		# Animate the game over message
+		var tween = create_tween()
+		tween.set_parallel(true)
+		tween.tween_property(timer_label, "scale", Vector2(1.5, 1.5), 0.5)
+		tween.tween_property(timer_label, "modulate", Color(1, 0, 0, 1), 0.5)
+
+func trigger_game_over():
+	"""Trigger the actual game over - show game over screen"""
+	print("Quest: Triggering game over screen")
+	
+	# Load and show the game over scene
+	var game_over_scene_path = "res://game_over.tscn"
+	
+	if ResourceLoader.exists(game_over_scene_path):
+		print("Quest: Loading game over scene: ", game_over_scene_path)
+		get_tree().change_scene_to_file(game_over_scene_path)
+	else:
+		# Fallback - try alternative paths
+		var alternative_paths = [
+			"res://GAME OVER.tscn",
+			"res://GameOver.tscn"
+		]
+		
+		var scene_loaded = false
+		for path in alternative_paths:
+			if ResourceLoader.exists(path):
+				print("Quest: Loading alternative game over scene: ", path)
+				get_tree().change_scene_to_file(path)
+				scene_loaded = true
+				break
+		
+		if not scene_loaded:
+			print("Quest: No game over scene found, restarting current scene")
+			get_tree().reload_current_scene()

@@ -16,7 +16,6 @@ corner_radius_bottom_left = 10
 
 [node name="DialogBox" type="CanvasLayer" groups=["dialog_system"]]
 layer = 200
-visible = false
 script = ExtResource("1_dialog_script")
 
 [node name="DialogControl" type="Control" parent="."]
