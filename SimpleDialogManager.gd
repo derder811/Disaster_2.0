@@ -21,8 +21,8 @@ var safety_tips = {
 	"mobile_phone": "Keep your mobile phone charged and nearby during a typhoon for emergency alerts and communication. \n Save battery by using it only when needed.",
 	"power_bank": "Keep a fully charged power bank ready before the storm. It's essential for communication when electricity is down.",
 	"bucket": "• Store clean water in buckets before a typhoon in case water supply gets cut off\n• Collect rainwater during the storm for non-drinking purposes\n• Keep containers covered to prevent contamination",
-	"e_fan": "ELECTRICAL SAFETY TIPS:\n• Check cords for damage before use\n• Keep electrical devices away from water\n• Don't overload electrical outlets\n• Have backup power sources ready\n• Know how to shut off main electrical breaker",
-	"frying_pan": "COOKING SAFETY TIPS:\n• Never leave cooking unattended\n• Keep pot handles turned inward\n• Have a fire extinguisher nearby\n• Know how to turn off gas/electricity quickly\n• Keep flammable items away from heat sources"
+	"e_fan": "ELECTRICAL TIPS:\n• Check cords for damage before use\n• Keep electrical devices away from water\n• Don't overload electrical outlets\n• Have backup power sources ready\n• Know how to shut off main electrical breaker",
+	"frying_pan": "COOKING TIPS:\n• Never leave cooking unattended\n• Keep pot handles turned inward\n• Have a fire extinguisher nearby\n• Know how to turn off gas/electricity quickly\n• Keep flammable items away from heat sources"
 }
 
 func show_safety_tips(asset_type: String, position: Vector2):
@@ -55,7 +55,7 @@ func show_item_dialog(item_name: String, position: Vector2):
 	
 	# Get safety tip for this item
 	var tip = safety_tips.get(item_name, "No safety information available for this item.")
-	var dialog_text = "Item picked up: " + item_name.capitalize() + "\n\nSafety Tip: " + tip
+	var dialog_text = "Item picked up: " + item_name.capitalize() + "\n\nTip: " + tip
 	
 	# Create and show dialog
 	current_dialog = dialog_scene.instantiate()

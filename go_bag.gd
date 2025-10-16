@@ -30,11 +30,18 @@ func _ready():
 	# Create pickup prompt label
 	create_pickup_prompt()
 	
-	# Signals are connected in the scene file, no need to connect them here
+	# Connect body signals for pickup functionality
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
+		print("✓ body_entered signal connected for ", itemName)
 	
-	# Keep the original interaction functionality
-	interaction_area.interact = Callable(self, "_on_interact")
-	interaction_area.action_name = "examine go bag"
+	if not body_exited.is_connected(_on_body_exited):
+		body_exited.connect(_on_body_exited)
+		print("✓ body_exited signal connected for ", itemName)
+	
+	# Interaction functionality removed - only pickup is available
+	# interaction_area.interact = Callable(self, "_on_interact")
+	# interaction_area.action_name = "examine go bag"
 	
 	print("Item '", itemName, "' initialized at position: ", global_position)
 
@@ -56,11 +63,21 @@ func _physics_process(_delta):
 		pickup_item()
 
 func _on_body_entered(body):
-	# Check if it's the player by looking for the Player2 group
-	if body.is_in_group("Player2"):
+	print("=== GO BAG COLLISION DETECTED ===")
+	print("Item '", itemName, "' detected collision with: ", body.name)
+	print("Body type: ", body.get_class())
+	print("Body groups: ", body.get_groups())
+	print("Checking if 'Player' in body.name: ", "Player" in body.name)
+	print("Checking if body is in group 'Player2': ", body.is_in_group("Player2"))
+	
+	# Check if it's the player by looking for the Player2 group or Player in name
+	if body.is_in_group("Player2") or "Player" in body.name:
+		print("✓ Player detected! Showing pickup prompt...")
 		player_nearby = body
 		if pickup_prompt:
 			pickup_prompt.visible = true
+	else:
+		print("✗ Not a player, ignoring collision")
 
 func _on_body_exited(body):
 	if body == player_nearby:
@@ -70,14 +87,13 @@ func _on_body_exited(body):
 
 func pickup_item():
 	if player_nearby:
-		# Add item to player's inventory first
-		if player_nearby.has_method("get_items"):
-			print("✓ Go Bag picked up successfully!")
-			player_nearby.get_items(itemData)
-		else:
-			print("✗ ERROR: Player doesn't have get_items method!")
+		# Don't add to inventory - just pickup the item
+		print("✓ Go Bag picked up (not added to inventory)!")
 		
-		# Show item pickup dialog
+		# Set the global flag that the go bag has been picked up
+		GameState.set_go_bag_picked_up()
+		
+		# Show tip dialog for go bag
 		SimpleDialogManager.show_item_dialog("go_bag", global_position)
 		
 		# Show self-talk about the go bag
@@ -88,9 +104,6 @@ func pickup_item():
 			pickup_prompt.visible = false
 
 func show_item_self_talk():
-	# Show the item pickup dialog first
-	SimpleDialogManager.show_item_dialog(itemName, global_position + Vector2(0, -50))
-	
 	# Wait for the dialog to finish, then trigger self-talk
 	await get_tree().create_timer(2.0).timeout
 	
@@ -105,16 +118,17 @@ func show_item_self_talk():
 	await get_tree().create_timer(4.0).timeout
 	queue_free()
 
-func _on_interact():
-	# Safety check for overlapping bodies
-	var overlapping_bodies = interaction_area.get_overlapping_bodies()
-	if overlapping_bodies.size() > 0:
-		sprite.flip_h = overlapping_bodies[0].global_position.x < global_position.x
-		# Use the new DialogManager autoload with asset type for safety tips
-		var dialog_position = global_position + Vector2(0, -50)  # Position dialog above go bag
-		DialogManager.start_dialog(dialog_position, lines, "go_bag")		
-		# Complete the quest objective for go bag interaction
-		var quest_node = get_node("../Quest")
-		if quest_node and quest_node.has_method("on_go_bag_interaction"):
-			quest_node.on_go_bag_interaction()
-			print("Go Bag: Quest objective completed!")
+# Examine functionality removed - _on_interact method no longer used
+# func _on_interact():
+# 	# Safety check for overlapping bodies
+# 	var overlapping_bodies = interaction_area.get_overlapping_bodies()
+# 	if overlapping_bodies.size() > 0:
+# 		sprite.flip_h = overlapping_bodies[0].global_position.x < global_position.x
+# 		# Use the new DialogManager autoload with asset type for safety tips
+# 		var dialog_position = global_position + Vector2(0, -50)  # Position dialog above go bag
+# 		DialogManager.start_dialog(dialog_position, lines, "go_bag")		
+# 		# Complete the quest objective for go bag interaction
+# 		var quest_node = get_node("../Quest")
+# 		if quest_node and quest_node.has_method("on_go_bag_interaction"):
+# 			quest_node.on_go_bag_interaction()
+# 			print("Go Bag: Quest objective completed!")

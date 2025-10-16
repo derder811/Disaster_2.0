@@ -69,7 +69,7 @@ var safety_tips = {
 		"Always keep clean water stored in a bucket before a typhoon incase the water supply gets cut off."
 	] as Array[String],
 	"e_fan": [
-		"ELECTRICAL SAFETY TIPS:
+		"ELECTRICAL TIPS:
 			 Check cords for damage before use. 
 			 Keep electrical devices away from water. 
 			 Don't overload electrical outlets. 
@@ -77,7 +77,7 @@ var safety_tips = {
 			  Know how to shut off main electrical breaker."
 	] as Array[String],
 	"frying_pan": [
-		"COOKING SAFETY TIPS: 
+		"COOKING TIPS: 
 			Never leave cooking unattended. 
 			Keep pot handles turned inward. 
 			Have a fire extinguisher nearby. 
@@ -118,7 +118,7 @@ func _show_safety_tips_dialog():
 	if dialog_box and dialog_box.has_method("show_dialog"):
 		var tips: Array[String] = safety_tips.get(current_asset_type, ["No safety tips available for this item."] as Array[String])
 		print("Safety tips found: ", tips)  # Debug print
-		dialog_box.show_dialog("SAFETY TIPS", tips)
+		dialog_box.show_dialog("TIPS", tips)
 	else:
 		print("DialogBox not found or doesn't have show_dialog method")
 	

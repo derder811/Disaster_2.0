@@ -74,6 +74,12 @@ func hide_pickup_prompt():
 		pickup_prompt.visible = false
 
 func pickup_item():
+	# Check if go bag has been picked up first
+	if not GameState.is_go_bag_available():
+		# Show message that bag is required
+		SimpleDialogManager.show_item_dialog("Get the bag first to pick it up or open the inventory.", global_position)
+		return
+	
 	if player_nearby and player_nearby.has_method("get_items"):
 		print("✓ Item '", itemName, "' picked up successfully!")
 		player_nearby.get_items(itemData)
