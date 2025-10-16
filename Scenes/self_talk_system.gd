@@ -4,18 +4,15 @@ class_name SelfTalkSystem
 # Self-talk messages for different scenarios
 var self_talk_messages = {
 	"game_start": [
-		"Let me explore this house and see what safety measures I can find.",
-		"I should check different rooms and interact with objects to learn more."
+		"It's early in the morning. Heavy rain pours outside as strong winds shake the trees. A typhoon is approaching, and you're the only one left at home. Your goal is to stay safe and prepare for the storm by gathering important items and taking the right precautions. Learn what to do before and during a typhoon through each interaction inside the house."
  
 	] as Array[String],
 	"timer_based": [
-		"I should keep exploring and gathering emergency supplies.",
-		"Better check all the rooms for useful items.",
-		"I wonder what other safety measures I can find around here.",
-		"Let me make sure I'm prepared for any emergency.",
-		"I should look for more emergency supplies just in case.",
-		"There might be more useful items I haven't found yet.",
-		"I need to stay alert and keep searching for safety equipment."
+		"It's raining hard... gonna check the window.",
+		"It's really pouring out there... I hope the roof holds up.",
+		"I know I kept some supplies somewhere...",
+		"Feels a bit eerie being alone during a storm like this.",
+		"I can hear the rain hitting the walls... I need to stay focused and finished preparing."
 	] as Array[String],
 	"item_pickup": {
 		"flashlight": "Good thing the flashlight still works. This will help if the power's out for long.",
@@ -57,7 +54,7 @@ func stop_timer_self_talk():
 
 func _timer_self_talk_loop():
 	while timer_self_talk_active:
-		await get_tree().create_timer(10.0).timeout  # Wait 10 seconds
+		await get_tree().create_timer(30.0).timeout  # Wait 30 seconds
 		
 		if timer_self_talk_active and player and is_instance_valid(player):
 			# Check if there's no active dialog before showing timer-based self talk
@@ -112,9 +109,8 @@ func _on_startup_dialog_finished():
 	show_self_talk_message()
 
 func show_self_talk_message():
-	# Get a random self-talk message from timer_based instead
-	var messages = self_talk_messages["timer_based"]
-	var random_message = messages[randi() % messages.size()]
+	# Always show the first message "It's raining hard... gonna check the window." as the first automatic talk
+	var first_message = "It's raining hard... gonna check the window."
 	
 	if player and is_instance_valid(player):
 		# Get the player's sprite for accurate text positioning
@@ -135,7 +131,7 @@ func show_self_talk_message():
 			# Fallback: position above player center
 			dialog_position = player.global_position + Vector2(0, -100)
 		
-		DialogManager.start_dialog(dialog_position, [random_message])
+		DialogManager.start_dialog(dialog_position, [first_message])
 
 # Function to trigger custom self-talk with a specific message
 func trigger_custom_self_talk(custom_message: String):
