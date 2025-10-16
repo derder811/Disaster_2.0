@@ -568,15 +568,18 @@ func update_timer_display():
 			timer_label.add_theme_color_override("font_color", Color.WHITE)
 
 func timer_expired():
-	"""Handle timer expiration - trigger game over"""
-	print("Quest: Timer expired! Game Over!")
+	"""Handle timer expiration - trigger flood animation then game over"""
+	print("Quest: Timer expired! Triggering flood animation before game over!")
 	stop_quest_timer()
+	
+	# Trigger flood animation first
+	trigger_flood_animation()
 	
 	# Show game over message
 	show_game_over_message()
 	
-	# Wait a moment then restart the scene or show game over screen
-	await get_tree().create_timer(3.0).timeout
+	# Wait longer to allow flood animation to play
+	await get_tree().create_timer(5.0).timeout
 	trigger_game_over()
 
 func show_game_over_message():
@@ -619,3 +622,39 @@ func trigger_game_over():
 		if not scene_loaded:
 			print("Quest: No game over scene found, restarting current scene")
 			get_tree().reload_current_scene()
+
+# Flood system integration
+var flood_system = null
+
+func connect_flood_system(flood_node):
+	"""Connect the flood system to this quest manager"""
+	flood_system = flood_node
+	print("Quest: Flood system connected: ", flood_node.name if flood_node else "null")
+
+func trigger_flood_animation():
+	"""Trigger the flood animation"""
+	print("Quest: Attempting to trigger flood animation")
+	
+	if flood_system and flood_system.has_method("on_quest_timer_expired"):
+		print("Quest: Calling flood system timer expired method")
+		flood_system.on_quest_timer_expired()
+	else:
+		# Try to find flood system in scene if not connected
+		var scene = get_tree().current_scene
+		if scene:
+			var flood_node = scene.find_child("FLOOD", true, false)
+			if not flood_node:
+				flood_node = scene.find_child("Flood", true, false)
+			
+			if flood_node and flood_node.has_method("on_quest_timer_expired"):
+				print("Quest: Found flood node in scene, triggering animation")
+				flood_node.on_quest_timer_expired()
+				flood_system = flood_node  # Cache for future use
+			else:
+				print("Quest: WARNING - Could not find or trigger flood system")
+		else:
+			print("Quest: ERROR - No current scene found")
+
+func is_timer_expired() -> bool:
+	"""Check if the quest timer has expired"""
+	return is_timer_active and time_remaining <= 0
