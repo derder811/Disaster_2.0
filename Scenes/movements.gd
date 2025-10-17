@@ -21,12 +21,12 @@ var interaction_ui: Node  # Reference to enhanced UI system
 # Bag/Inventory reference
 @onready var bag: Control
 
-# Input Actions - WASD movement
-const MOVE_LEFT = "move_left"    # A key
-const MOVE_RIGHT = "move_right"  # D key
-const MOVE_UP = "move_up"        # W key
-const MOVE_DOWN = "move_down"    # S key
-const INTERACT = "interact"      # Space key
+# Input Actions - Player 2 IJKL movement (alternative WASD)
+const MOVE_LEFT = "player2_left"    # J key
+const MOVE_RIGHT = "player2_right"  # L key
+const MOVE_UP = "player2_up"        # I key
+const MOVE_DOWN = "player2_down"    # K key
+const INTERACT = "interact"         # E key
 
 func _ready():
 	# Add player to the Player2 group for interaction system
