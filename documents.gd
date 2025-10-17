@@ -77,7 +77,7 @@ func _on_body_entered(body):
 	var is_player = false
 	if "Player" in body.name or body.is_in_group("Player2"):
 		is_player = true
-	elif body.get_class() == "CharacterBody2D" and body.collision_layer == 2:
+	elif body.get_class() == "CharacterBody2D" and body.has_method("get") and "collision_layer" in body and body.collision_layer == 2:
 		is_player = true
 		print("✓ Detected player by collision layer 2")
 	

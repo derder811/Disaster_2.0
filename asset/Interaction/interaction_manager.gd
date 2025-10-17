@@ -19,8 +19,13 @@ func _ready():
 	if player and is_instance_valid(player):
 		print("Player position: ", player.global_position)
 		print("Player groups: ", player.get_groups())
-		print("Player collision_layer: ", player.collision_layer)
-		print("Player collision_mask: ", player.collision_mask)
+		
+		# Safe collision_layer access
+		if player.has_method("get") and "collision_layer" in player:
+			print("Player collision_layer: ", player.collision_layer)
+			print("Player collision_mask: ", player.collision_mask)
+		else:
+			print("Player collision_layer: Not available (not a physics body)")
 	else:
 		print("ERROR: Player not found in Player2 group!")
 	print("Label reference: ", label != null)
