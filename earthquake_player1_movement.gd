@@ -10,6 +10,13 @@ extends CharacterBody2D
 var nearby_interactables: Array[Node] = []
 var closest_interactable: Node = null
 
+# Input Actions - Player 1 WASD movement
+const MOVE_LEFT = "move_left"       # A key
+const MOVE_RIGHT = "move_right"     # D key
+const MOVE_UP = "move_up"           # W key
+const MOVE_DOWN = "move_down"       # S key
+const INTERACT = "interact"         # E key
+
 # UI Elements
 var interaction_ui_container: Control
 var interaction_label: Label
@@ -21,12 +28,6 @@ var interaction_ui: Node  # Reference to enhanced UI system
 # Bag/Inventory reference
 @onready var bag: Control
 
-# Input Actions - Player 1 WASD movement
-const MOVE_LEFT = "player1_left"    # A key
-const MOVE_RIGHT = "player1_right"  # D key
-const MOVE_UP = "player1_up"        # W key
-const MOVE_DOWN = "player1_down"    # S key
-const INTERACT = "interact"         # E key
 
 func _ready():
 	# Add player to the Player1 group for interaction system
@@ -37,10 +38,20 @@ func _ready():
 	# Connect to physics process for smooth movement
 	set_physics_process(true)
 
+func setup_enhanced_ui():
+	# Get reference to the scene-level InteractionUI node
+	var scene = get_tree().current_scene
+	if scene:
+		interaction_ui = scene.get_node_or_null("InteractionUI")
+	
+	if not interaction_ui:
+		print("Warning: InteractionUI node not found in scene")
+	else:
+		print("InteractionUI found and connected successfully")
+
 func setup_bag_reference():
 	# Find the bag as a child of the player
 	bag = get_node_or_null("Bag")
-	
 	if not bag:
 		print("✗ WARNING: Bag node not found as child of player 1")
 		print("Available child nodes:")
@@ -55,18 +66,6 @@ func setup_interaction_ui():
 	# The interaction UI is now handled by the scene-level InteractionUI node
 	# This function is kept for compatibility but doesn't create duplicate UI
 	pass
-
-func setup_enhanced_ui():
-	# Get reference to the scene-level InteractionUI node
-	var scene = get_tree().current_scene
-	if scene:
-		interaction_ui = scene.get_node_or_null("InteractionUI")
-	
-	if not interaction_ui:
-		print("Warning: InteractionUI node not found in scene for Player 1")
-	else:
-		print("Player 1 InteractionUI found and connected successfully")
-
 func _physics_process(delta):
 	handle_movement(delta)
 	update_nearby_interactables()

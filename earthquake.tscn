@@ -1,11 +1,12 @@
-[gd_scene load_steps=34 format=4 uid="uid://bjkpnjhn5p5ll"]
+[gd_scene load_steps=35 format=4 uid="uid://bjkpnjhn5p5ll"]
 
 [ext_resource type="Texture2D" uid="uid://bmwlesqnyqitg" path="res://earthquake Asset/EQ Tileset.png" id="1_ny0hn"]
 [ext_resource type="Texture2D" uid="uid://brc11ppc6xbdj" path="res://earthquake Asset/SuperMarket.png" id="2_6f7f8"]
 [ext_resource type="Texture2D" uid="uid://cv8scgge3fbd2" path="res://asset/Furnitures/Border.png" id="2_hy6pp"]
 [ext_resource type="Texture2D" uid="uid://ce3mh38hfnjq4" path="res://earthquake Asset/Grocery Titeset.png" id="3_463xk"]
 [ext_resource type="Texture2D" uid="uid://cbqtqy2ya8oqf" path="res://asset/Characters/Teen Male sprite.png" id="3_ny0hn"]
-[ext_resource type="Script" path="res://earthquake_player1_movement.gd" id="4_player1_movements"]
+[ext_resource type="Script" uid="uid://dbgniepwxxk4" path="res://earthquake_player1_movement.gd" id="4_player1_movements"]
+[ext_resource type="Script" uid="uid://ddscdyiy8xuev" path="res://naruto_eq_self_talk_system.gd" id="5_naruto_eq_self_talk"]
 [ext_resource type="Texture2D" uid="uid://5rbg04khobc4" path="res://earthquake Asset/House.png" id="6_ar1gu"]
 [ext_resource type="Texture2D" uid="uid://2qtu5slxw7k4" path="res://earthquake Asset/Outside Chair.png" id="7_ar1gu"]
 [ext_resource type="Texture2D" uid="uid://f8ch702fpghh" path="res://earthquake Asset/Electric Line Post.png" id="8_njc4q"]
@@ -10840,3 +10841,6 @@ shape = SubResource("RectangleShape2D_6f7f8")
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Earthquake player 1"]
 remote_path = NodePath("../../Camera2D")
+
+[node name="NarutoEQSelfTalkSystem" type="Node2D" parent="Earthquake player 1"]
+script = ExtResource("5_naruto_eq_self_talk")
