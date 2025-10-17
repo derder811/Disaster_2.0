@@ -18,7 +18,7 @@ func _ready():
 	print("Signals connected for InteractionArea: ", action_name)
 
 func _on_body_entered(body):
-	print("InteractionArea: Body entered - ", body.name, " | Groups: ", body.get_groups())
+	print("DEBUG: Body entered InteractionArea: ", body.name, " Groups: ", body.get_groups())
 	
 	# Check if body has collision_layer property (CharacterBody2D, RigidBody2D, etc.)
 	var collision_info = "No collision_layer"
@@ -32,15 +32,15 @@ func _on_body_entered(body):
 	print("InteractionArea: Checking if body is in Player2 group: ", body.is_in_group("Player2"))
 	
 	if body.is_in_group("Player2"):
-		print("InteractionArea: Player2 detected! Registering with InteractionManager")
+		print("DEBUG: Player2 detected! Registering area with action: ", action_name)
 		InteractionManager.register_area(self)
 	else:
-		print("InteractionArea: Body not in Player2 group, ignoring")
+		print("DEBUG: Body is not in Player2 group")
 
 func _on_body_exited(body):
-	print("InteractionArea: Body exited - ", body.name, " | Groups: ", body.get_groups())
+	print("DEBUG: Body exited InteractionArea: ", body.name)
 	if body.is_in_group("Player2"):
-		print("InteractionArea: Player2 exited! Unregistering from InteractionManager")
+		print("DEBUG: Player2 exited! Unregistering area")
 		InteractionManager.unregister_area(self)
 	else:
-		print("InteractionArea: Non-Player2 body exited, ignoring")
+		print("DEBUG: Non-Player2 body exited")

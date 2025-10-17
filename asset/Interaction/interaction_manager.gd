@@ -36,26 +36,20 @@ func _ready():
 
 # Functions
 func register_area(area: InteractionArea):
-	print("=== InteractionManager: REGISTERING AREA ===")
-	print("Area name: ", area.action_name)
-	if area and is_instance_valid(area):
-		print("Area position: ", area.global_position)
-	print("Current active areas count: ", active_areas.size())
-	active_areas.append(area)
-	print("New active areas count: ", active_areas.size())
-	print("=== End register area ===")
+	print("DEBUG: InteractionManager registering area: ", area.action_name)
+	if area not in active_areas:
+		active_areas.append(area)
+		print("DEBUG: Area registered successfully. Total areas: ", active_areas.size())
+	else:
+		print("DEBUG: Area already registered")
 
 func unregister_area(area: InteractionArea):
-	print("=== InteractionManager: UNREGISTERING AREA ===")
-	print("Area name: ", area.action_name)
-	print("Current active areas count: ", active_areas.size())
-	var index = active_areas.find(area)
-	if index != -1:
-		active_areas.remove_at(index)
-		print("Area removed. New count: ", active_areas.size())
+	print("DEBUG: InteractionManager unregistering area: ", area.action_name)
+	if area in active_areas:
+		active_areas.erase(area)
+		print("DEBUG: Area unregistered successfully. Total areas: ", active_areas.size())
 	else:
-		print("ERROR: Area not found in active_areas!")
-	print("=== End unregister area ===")
+		print("DEBUG: Area was not in active_areas list")
 
 func sort_by_distance_to_player(a, b):
 	if not player or not is_instance_valid(player) or not a or not is_instance_valid(a) or not b or not is_instance_valid(b):
@@ -65,30 +59,32 @@ func sort_by_distance_to_player(a, b):
 	return distance_a < distance_b
 
 func _process(delta):
-	if active_areas.size() > 0 and can_interact:
-		# Sort by distance
+	if not player:
+		return
+	
+	if active_areas.size() > 0:
+		# Sort areas by distance to player
 		active_areas.sort_custom(sort_by_distance_to_player)
+		var closest_area = active_areas[0]
 		
-		# Show the interaction prompt for the closest area
-		if active_areas.size() > 0:  # Additional safety check
-			var closest_area = active_areas[0]
-			if closest_area and is_instance_valid(closest_area):
-				label.text = BASE_TEXT + closest_area.action_name
-				label.visible = true
-				
-				# Position label near the interactable object instead of above the player
-				if closest_area and is_instance_valid(closest_area):
-					label.global_position = closest_area.global_position + Vector2(0, -40)
+		# Show interaction prompt for closest area
+		if label:
+			label.text = "Press (E) to " + closest_area.action_name
+			label.visible = true
 			
-			# Only print occasionally to avoid spam
-			if Engine.get_process_frames() % 60 == 0:  # Every 60 frames (1 second at 60fps)
-				if closest_area and is_instance_valid(closest_area):
-					print("InteractionManager: Showing prompt for - ", closest_area.action_name, " at ", closest_area.global_position)
+			# Position label near the interactable object
+			var target_position = closest_area.global_position
+			# Offset the label to appear below and slightly to the right of the object
+			label.global_position = target_position + Vector2(20, 60)
+		
+		# Handle interaction input
+		if Input.is_action_just_pressed("interact"):
+			print("DEBUG: E key pressed! Calling interact on: ", closest_area.action_name)
+			closest_area.interact.call()
 	else:
-		# Hide label
-		if label.visible:
-			print("InteractionManager: Hiding label (active_areas: ", active_areas.size(), ", can_interact: ", can_interact, ")")
-		label.visible = false
+		# Hide interaction prompt when no areas are active
+		if label:
+			label.visible = false
 
 func _input(event):
 	# Check if E key is pressed

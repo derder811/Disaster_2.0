@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://bjkpnjhn5p5ll"]
+[gd_scene load_steps=36 format=4 uid="uid://bjkpnjhn5p5ll"]
 
 [ext_resource type="Texture2D" uid="uid://bmwlesqnyqitg" path="res://earthquake Asset/EQ Tileset.png" id="1_ny0hn"]
 [ext_resource type="Texture2D" uid="uid://brc11ppc6xbdj" path="res://earthquake Asset/SuperMarket.png" id="2_6f7f8"]
@@ -6,12 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://ce3mh38hfnjq4" path="res://earthquake Asset/Grocery Titeset.png" id="3_463xk"]
 [ext_resource type="Texture2D" uid="uid://cbqtqy2ya8oqf" path="res://asset/Characters/Teen Male sprite.png" id="3_ny0hn"]
 [ext_resource type="Script" uid="uid://dbgniepwxxk4" path="res://earthquake_player1_movement.gd" id="4_player1_movements"]
+[ext_resource type="PackedScene" uid="uid://ddd845qxqhepm" path="res://entrance_to_store.tscn" id="5_d4icp"]
 [ext_resource type="Script" uid="uid://ddscdyiy8xuev" path="res://naruto_eq_self_talk_system.gd" id="5_naruto_eq_self_talk"]
 [ext_resource type="Texture2D" uid="uid://5rbg04khobc4" path="res://earthquake Asset/House.png" id="6_ar1gu"]
 [ext_resource type="Texture2D" uid="uid://2qtu5slxw7k4" path="res://earthquake Asset/Outside Chair.png" id="7_ar1gu"]
 [ext_resource type="Texture2D" uid="uid://f8ch702fpghh" path="res://earthquake Asset/Electric Line Post.png" id="8_njc4q"]
-[ext_resource type="Script" path="res://store_entrance.gd" id="9_store_entrance_script"]
-[ext_resource type="PackedScene" uid="uid://d3v5enbqtirae" path="res://asset/Interaction/Interaction Area/interaction_area.tscn" id="10_interaction_area_scene"]
 [ext_resource type="PackedScene" uid="uid://cjtfeqjgwd35q" path="res://asset/Interaction/InteractionManager.tscn" id="11_interaction_manager"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hy6pp"]
@@ -10602,9 +10601,6 @@ sources/2 = SubResource("TileSetAtlasSource_8tkmo")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ar1gu"]
 size = Vector2(3264.3, 1828.83)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ny0hn"]
-size = Vector2(183, 40)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_njc4q"]
 size = Vector2(1292.14, 710.337)
 
@@ -10762,16 +10758,8 @@ texture = ExtResource("2_6f7f8")
 position = Vector2(5.35205, 0.42334)
 shape = SubResource("RectangleShape2D_ar1gu")
 
-[node name="Entrance to Store" type="Area2D" parent="."]
+[node name="Entrance to Store" parent="." instance=ExtResource("5_d4icp")]
 position = Vector2(1566, 245)
-script = ExtResource("9_store_entrance_script")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entrance to Store"]
-position = Vector2(3, -24)
-shape = SubResource("RectangleShape2D_ny0hn")
-
-[node name="InteractionArea" parent="Entrance to Store" instance=ExtResource("10_interaction_area_scene")]
-position = Vector2(3, -11)
 
 [node name="House" type="Sprite2D" parent="."]
 position = Vector2(3733, 13)
@@ -10855,3 +10843,4 @@ remote_path = NodePath("../../Camera2D")
 script = ExtResource("5_naruto_eq_self_talk")
 
 [node name="InteractionManager" parent="." instance=ExtResource("11_interaction_manager")]
+position = Vector2(1255, 433)
