@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=4 uid="uid://dhhip6kurcl8k"]
+[gd_scene load_steps=57 format=4 uid="uid://dhhip6kurcl8k"]
 
 [ext_resource type="Texture2D" uid="uid://ce3mh38hfnjq4" path="res://earthquake Asset/Grocery Titeset.png" id="1_v2xvf"]
 [ext_resource type="Texture2D" uid="uid://ex6vuokpyrv4" path="res://asset/Wall.png" id="2_n3o6q"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://ceuy764himm0j" path="res://earthquake Asset/Meat Container.png" id="17_pv4qk"]
 [ext_resource type="Texture2D" uid="uid://cilw07qsq0ixp" path="res://earthquake Asset/Hotdog and Siopao.png" id="18_sk4qd"]
 [ext_resource type="Texture2D" uid="uid://tteey0pg81fv" path="res://earthquake Asset/Grocery Table.png" id="19_pv4qk"]
+[ext_resource type="Script" path="res://player3_store_movement.gd" id="20_player3_movement"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eky7a"]
 texture = ExtResource("1_v2xvf")
@@ -10882,6 +10883,7 @@ position = Vector2(838, 921)
 
 [node name="Earthquake Player" type="CharacterBody2D" parent="."]
 position = Vector2(838, 921)
+script = ExtResource("20_player3_movement")
 
 [node name="Sprite2D" type="Sprite2D" parent="Earthquake Player"]
 texture = ExtResource("4_g3i2h")
