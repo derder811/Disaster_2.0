@@ -42,7 +42,7 @@
 [ext_resource type="Texture2D" uid="uid://dpu5w3keqq86m" path="res://asset/Furnitures/Medicine 1.png" id="44_6jkof"]
 [ext_resource type="PackedScene" uid="uid://ejjuixy6nsot" path="res://asset/Furnitures/bed.tscn" id="46_1fdyj"]
 [ext_resource type="PackedScene" uid="uid://syisfjs6gwbf" path="res://e_fan.tscn" id="46_nj8df"]
-[ext_resource type="PackedScene" uid="uid://d356xsoo8fmtv" path="res://Scenes/player.tscn" id="46_rfgjq"]
+[ext_resource type="PackedScene" uid="uid://d356xsoo8fmtv" path="res://Scenes/Nathan.tscn" id="46_rfgjq"]
 [ext_resource type="PackedScene" uid="uid://c6gs0utdxtg5r" path="res://Scenes/dialog_box.tscn" id="47_1fdyj"]
 [ext_resource type="PackedScene" uid="uid://ba5u1mr1tujdf" path="res://quest.tscn" id="47_quest"]
 [ext_resource type="PackedScene" uid="uid://bgll4a52be7j0" path="res://pause_scene.tscn" id="48_pause"]
@@ -2596,10 +2596,10 @@ position = Vector2(0.677507, 4.2417)
 position = Vector2(-1.01688, 26.8612)
 shape = SubResource("CapsuleShape2D_p8a1h")
 
-[node name="Player2" parent="." instance=ExtResource("46_rfgjq")]
+[node name="nathan" parent="." instance=ExtResource("46_rfgjq")]
 position = Vector2(-418.976, -462.503)
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player2"]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="nathan"]
 position = Vector2(498, 326)
 remote_path = NodePath("../../Camera2D")
 

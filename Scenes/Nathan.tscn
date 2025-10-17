@@ -150,7 +150,7 @@ transitions = ["Start", "walk", SubResource("AnimationNodeStateMachineTransition
 [sub_resource type="CircleShape2D" id="CircleShape2D_vgqql"]
 radius = 48.2597
 
-[node name="Player" type="CharacterBody2D"]
+[node name="NAthan" type="CharacterBody2D"]
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_cvnsp")
