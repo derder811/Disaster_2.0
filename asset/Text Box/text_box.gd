@@ -99,6 +99,10 @@ func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_SPACE and is_text_complete and not is_being_freed:
 			print("Spacebar pressed - closing text box")
+			# Stop the auto-hide timer if spacebar is pressed
+			if auto_hide_timer and auto_hide_timer.time_left > 0:
+				auto_hide_timer.stop()
+				print("Stopped auto-hide timer due to spacebar press")
 			is_being_freed = true
 			queue_free()
 
@@ -184,7 +188,12 @@ func _display_letter():
 		# Show continue label when text is complete
 		if continue_label:
 			continue_label.visible = true
-		# Auto-hide timer removed - text box will only close on spacebar press
+		
+		# Start 7-second auto-hide timer for Player 3 self-talk
+		if auto_hide_timer:
+			auto_hide_timer.wait_time = 7.0
+			auto_hide_timer.start()
+			print("Started 7-second auto-hide timer for self-talk")
 		return
 	
 	match text[letter_index]:
@@ -203,5 +212,8 @@ func _on_timer_timeout() -> void:
 	_display_letter()
 
 func _on_auto_hide_timer_timeout() -> void:
-	# Auto-hide functionality removed - this function is no longer used
-	pass
+	# Auto-hide after 7 seconds for Player 3 self-talk
+	print("Auto-hide timer expired - closing text box")
+	if not is_being_freed:
+		is_being_freed = true
+		queue_free()

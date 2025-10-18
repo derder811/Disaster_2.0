@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=4 uid="uid://dhhip6kurcl8k"]
+[gd_scene load_steps=62 format=4 uid="uid://dhhip6kurcl8k"]
 
 [ext_resource type="Texture2D" uid="uid://ce3mh38hfnjq4" path="res://earthquake Asset/Grocery Titeset.png" id="1_v2xvf"]
 [ext_resource type="Texture2D" uid="uid://ex6vuokpyrv4" path="res://asset/Wall.png" id="2_n3o6q"]
@@ -22,11 +22,10 @@
 [ext_resource type="PackedScene" uid="uid://e5dy4caogpup" path="res://table_3.tscn" id="19_566k6"]
 [ext_resource type="PackedScene" uid="uid://debbae0xl24vd" path="res://table_2.tscn" id="20_4v8su"]
 [ext_resource type="Script" uid="uid://dcqr0c7w7cu63" path="res://player3_store_movement.gd" id="20_player3_movement"]
-[ext_resource type="Script" uid="uid://d258ewk0hhnku" path="res://test_player3_interaction.gd" id="21_test_script"]
+[ext_resource type="Script" path="res://test_player3_interaction.gd" id="21_test_script"]
 [ext_resource type="PackedScene" uid="uid://cjtfeqjgwd35q" path="res://asset/Interaction/InteractionManager.tscn" id="22_interaction_manager"]
-[ext_resource type="Script" uid="uid://jf00vjx3ch42" path="res://test_self_talk_direct.gd" id="23_test_direct"]
+[ext_resource type="Script" path="res://test_self_talk_direct.gd" id="23_test_direct"]
 [ext_resource type="Script" uid="uid://bfpo3un3k6cdb" path="res://comprehensive_debug.gd" id="24_comprehensive_debug"]
-[ext_resource type="Script" path="res://test_interaction_debug.gd" id="25_interaction_debug"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eky7a"]
 texture = ExtResource("1_v2xvf")
@@ -10894,6 +10893,3 @@ script = ExtResource("23_test_direct")
 
 [node name="ComprehensiveDebug" type="Node2D" parent="."]
 script = ExtResource("24_comprehensive_debug")
-
-[node name="InteractionDebugTest" type="Node2D" parent="."]
-script = ExtResource("25_interaction_debug")

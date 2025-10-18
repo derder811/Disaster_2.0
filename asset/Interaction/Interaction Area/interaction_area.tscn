@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
 size = Vector2(50, 86)
 
-[node name="InteractionArea" type="Area2D" groups=["Player2", "interactable"]]
+[node name="InteractionArea" type="Area2D" groups=["interactable"]]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_1xqix")

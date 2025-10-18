@@ -9,6 +9,15 @@ extends CharacterBody2D
 @onready var animation_tree: AnimationTree = $AnimationTree
 @onready var sprite: Sprite2D = $Sprite2D
 
+# Self-talk system
+var self_talk_system: Player3SelfTalkSystem
+var last_position: Vector2
+var movement_threshold: float = 100.0  # Distance threshold to trigger movement comments
+var movement_count: int = 0  # Counter for movements
+var movement_trigger_threshold: int = 20  # Trigger self-talk every 20 movements
+# Timer-based movement comment trigger (every 10 seconds)
+var movement_comment_timer: Timer
+
 # Input Actions - Player 3 WASD movement
 const MOVE_LEFT = "ui_left"         # A key / Left Arrow
 const MOVE_RIGHT = "ui_right"       # D key / Right Arrow  
@@ -20,17 +29,44 @@ const WASD_LEFT = "move_left_p3"    # A key for Player 3
 const WASD_RIGHT = "move_right_p3"  # D key for Player 3
 const WASD_UP = "move_up_p3"        # W key for Player 3
 const WASD_DOWN = "move_down_p3"    # S key for Player 3
-
 func _ready():
-	# Add player to Player3 group
-	add_to_group("Player3")
-	print("Player 3 initialized in store scene")
+	# Add player to Player2 group for interaction system
+	add_to_group("Player2")
+	print("Player 3 initialized in store scene and added to Player2 group")
+	
+	# Initialize self-talk system
+	setup_self_talk_system()
+	
+	# Store initial position
+	last_position = global_position
+	
 	# Connect to physics process for smooth movement
 	set_physics_process(true)
+	
+	# Set up a timer to trigger movement comments every 10 seconds
+	var existing_timer = get_node_or_null("MovementCommentTimer")
+	if existing_timer and (existing_timer is Timer):
+		movement_comment_timer = existing_timer
+	else:
+		movement_comment_timer = Timer.new()
+		movement_comment_timer.name = "MovementCommentTimer"
+		movement_comment_timer.wait_time = 10.0
+		movement_comment_timer.one_shot = false
+		movement_comment_timer.autostart = true
+		movement_comment_timer.timeout.connect(_on_movement_comment_timer_timeout)
+		add_child(movement_comment_timer)
+
+func _on_movement_comment_timer_timeout():
+	# Trigger movement comment on a fixed interval
+	if self_talk_system:
+		self_talk_system.trigger_movement_comment()
 
 func _physics_process(delta):
 	handle_movement(delta)
 	move_and_slide()
+	
+	# Timer now drives movement comments; disable distance-based triggering
+	# check_movement_for_self_talk()
 
 func handle_movement(delta):
 	# Get input vector
@@ -88,3 +124,36 @@ func handle_movement(delta):
 func _input(event):
 	if event.is_action_pressed("ui_accept"):  # Space or Enter key
 		print("Player 3 position: ", global_position)
+
+func setup_self_talk_system():
+	"""Initialize the self-talk system for Player 3"""
+	# Create and add the self-talk system as a child
+	self_talk_system = preload("res://player3_self_talk_system.gd").new()
+	add_child(self_talk_system)
+	print("Player 3 self-talk system initialized")
+
+func check_movement_for_self_talk():
+	"""Check if player has moved significantly to trigger movement comments"""
+	if self_talk_system and last_position.distance_to(global_position) > movement_threshold:
+		movement_count += 1
+		last_position = global_position
+		
+		# Only trigger self-talk every 20 movements
+		if movement_count >= movement_trigger_threshold:
+			self_talk_system.trigger_movement_comment()
+			movement_count = 0  # Reset counter after triggering
+
+func trigger_item_self_talk(item_type: String):
+	"""Trigger self-talk when interacting with items"""
+	print("DEBUG: trigger_item_self_talk called with item_type: ", item_type)
+	print("DEBUG: self_talk_system exists: ", self_talk_system != null)
+	if self_talk_system:
+		print("DEBUG: Calling trigger_after_item_interact_talk on self_talk_system")
+		self_talk_system.trigger_after_item_interact_talk(item_type)
+	else:
+		print("DEBUG: self_talk_system is null!")
+
+func trigger_custom_self_talk(message: String):
+	"""Trigger custom self-talk message"""
+	if self_talk_system:
+		self_talk_system.trigger_custom_self_talk(message)
