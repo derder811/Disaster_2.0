@@ -20,6 +20,7 @@ var current_objective_index := 0
 @onready var quest_box: Control
 var original_position: Vector2
 var is_quest_box_visible := false
+var quest_started := false
 
 func _ready():
 	# Cache UI nodes
@@ -32,8 +33,8 @@ func _ready():
 		var margin := 24.0
 		original_position = Vector2(viewport_size.x - quest_box.size.x - margin, margin)
 		quest_box.position = original_position
-		# Show quest box when entering the store
-		show_quest_box_with_animation()
+		# Do NOT show by default; will be started by cashier interaction
+		quest_box.visible = false
 	else:
 		print("StoreQuest: WARNING - Quest box not found")
 	
@@ -94,6 +95,9 @@ func update_quest_ui():
 		progress_label.text = "Quest Progress: %d/4" % done
 
 func complete_objective(objective_name: String):
+	if not quest_started:
+		print("StoreQuest: interaction ignored; quest not started")
+		return
 	var idx := _objective_index(objective_name)
 	if idx == -1:
 		print("StoreQuest: Unknown objective", objective_name)
@@ -213,3 +217,12 @@ func show_quest_ui():
 		quest_box.visible = true
 	# Re-run the slide-in animation if it was hidden
 	show_quest_box_with_animation()
+
+# New: explicit start, only called by cashier interaction
+func start_quest():
+	if quest_started:
+		return
+	quest_started = true
+	print("StoreQuest: started by cashier interaction")
+	update_quest_ui()
+	show_quest_ui()

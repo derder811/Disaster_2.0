@@ -60,7 +60,12 @@ func sort_by_distance_to_player(a, b):
 
 func _process(delta):
 	if not player:
-		return
+		# Late-bind the player if group assignment happens after our _ready
+		player = get_tree().get_first_node_in_group("Player2")
+		if not player:
+			return
+		else:
+			print("InteractionManager: late-bound Player2 found: ", player.name)
 	
 	# Prune invalid or freed areas to avoid accessing invalid nodes
 	for i in range(active_areas.size() - 1, -1, -1):
