@@ -23,3 +23,8 @@ func _on_interact():
 		player.trigger_item_self_talk("ice_cream_fridge")
 	else:
 		print("DEBUG: Player not found or doesn't have trigger_item_self_talk method")
+	
+	# Update StoreQuest objective
+	var store_quest = get_tree().current_scene.find_child("StoreQuest", true, false)
+	if store_quest and store_quest.has_method("on_ice_cream_fridge_interaction"):
+		store_quest.on_ice_cream_fridge_interaction()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=4 uid="uid://dhhip6kurcl8k"]
+[gd_scene load_steps=64 format=4 uid="uid://dhhip6kurcl8k"]
 
 [ext_resource type="Texture2D" uid="uid://ce3mh38hfnjq4" path="res://earthquake Asset/Grocery Titeset.png" id="1_v2xvf"]
 [ext_resource type="Texture2D" uid="uid://ex6vuokpyrv4" path="res://asset/Wall.png" id="2_n3o6q"]
@@ -26,7 +26,8 @@
 [ext_resource type="PackedScene" uid="uid://cjtfeqjgwd35q" path="res://asset/Interaction/InteractionManager.tscn" id="22_interaction_manager"]
 [ext_resource type="Script" uid="uid://jf00vjx3ch42" path="res://test_self_talk_direct.gd" id="23_test_direct"]
 [ext_resource type="Script" uid="uid://bfpo3un3k6cdb" path="res://comprehensive_debug.gd" id="24_comprehensive_debug"]
-[ext_resource type="Script" path="res://test_interaction_debug.gd" id="25_interaction_debug"]
+[ext_resource type="Script" uid="uid://d1yw73c1iqib0" path="res://test_interaction_debug.gd" id="25_interaction_debug"]
+[ext_resource type="PackedScene" path="res://store_quest.tscn" id="99_store_quest"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eky7a"]
 texture = ExtResource("1_v2xvf")
@@ -10886,6 +10887,8 @@ remote_path = NodePath("../../Camera2D")
 
 [node name="TestInteraction" type="Node2D" parent="."]
 script = ExtResource("21_test_script")
+
+[node name="StoreQuest" parent="." instance=ExtResource("99_store_quest")]
 
 [node name="InteractionManager" parent="." instance=ExtResource("22_interaction_manager")]
 

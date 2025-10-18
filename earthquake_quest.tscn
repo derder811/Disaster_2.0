@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://earthquake_quest.gd" id="1_earthquake_quest_script"]
+
+[node name="EarthquakeQuest" type="Node"]
+script = ExtResource("1_earthquake_quest_script")
+
+[node name="Quest UI" type="CanvasLayer" parent="."]
+layer = 50
+
+[node name="Earthquake Quest Box" type="Panel" parent="Quest UI"]
+visible = true
+position = Vector2(24, 24)
+size = Vector2(420, 160)
+
+[node name="QuestContainer" type="VBoxContainer" parent="Quest UI/Earthquake Quest Box"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 12.0
+offset_right = -14.0
+offset_bottom = -12.0
+
+[node name="HeaderContainer" type="HBoxContainer" parent="Quest UI/Earthquake Quest Box/QuestContainer"]
+
+[node name="HeaderLabel" type="Label" parent="Quest UI/Earthquake Quest Box/QuestContainer/HeaderContainer"]
+text = "Earthquake Quest"
+
+[node name="HSeparator" type="HSeparator" parent="Quest UI/Earthquake Quest Box/QuestContainer"]
+
+[node name="Objectives" type="VBoxContainer" parent="Quest UI/Earthquake Quest Box/QuestContainer"]
+
+[node name="Objective1" type="HBoxContainer" parent="Quest UI/Earthquake Quest Box/QuestContainer/Objectives"]
+
+[node name="CheckBox1" type="CheckBox" parent="Quest UI/Earthquake Quest Box/QuestContainer/Objectives/Objective1"]
+text = ""
+
+[node name="Label1" type="Label" parent="Quest UI/Earthquake Quest Box/QuestContainer/Objectives/Objective1"]
+text = "Hide under 3 tables (0/3)"
+
+[node name="Objective2" type="HBoxContainer" parent="Quest UI/Earthquake Quest Box/QuestContainer/Objectives"]
+
+[node name="CheckBox2" type="CheckBox" parent="Quest UI/Earthquake Quest Box/QuestContainer/Objectives/Objective2"]
+text = ""
+
+[node name="Label2" type="Label" parent="Quest UI/Earthquake Quest Box/QuestContainer/Objectives/Objective2"]
+text = "Go to exit"

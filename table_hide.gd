@@ -1,9 +1,14 @@
 extends Area2D
 
+signal player_hidden(table_name: String)
+signal player_unhidden(table_name: String)
+
 @onready var interaction_area: InteractionArea = $InteractionArea
 var is_player_hidden: bool = false
 
 func _ready():
+	# Allow EarthquakeQuest to find all tables easily
+	add_to_group("table_hide")
 	if interaction_area:
 		interaction_area.action_name = "hide under table"
 		interaction_area.interact = Callable(self, "_on_interact")
@@ -39,12 +44,15 @@ func _hide_player(player: Node):
 		interaction_area.action_name = "come out"
 	print("TableHide: Player is now hidden under the table")
 	
+	# Notify quests
+	emit_signal("player_hidden", name)
+	
 	# Optional self-talk
 	var self_talk_nodes = get_tree().get_nodes_in_group("self_talk_system")
 	if self_talk_nodes.size() > 0:
 		var self_talk_system = self_talk_nodes[0]
 		if self_talk_system.has_method("trigger_custom_self_talk"):
-			self_talk_system.trigger_custom_self_talk("I’ll hide under the table.")
+			self_talk_system.trigger_custom_self_talk("I'm covered under the table.")
 
 func _unhide_player(player: Node):
 	# Show visuals and resume movement
@@ -58,6 +66,9 @@ func _unhide_player(player: Node):
 	if interaction_area:
 		interaction_area.action_name = "hide under table"
 	print("TableHide: Player has come out from under the table")
+	
+	# Notify quests
+	emit_signal("player_unhidden", name)
 	
 	# Optional self-talk
 	var self_talk_nodes = get_tree().get_nodes_in_group("self_talk_system")

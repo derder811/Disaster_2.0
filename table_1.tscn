@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bnhwwlmjwp3ub"]
 
 [ext_resource type="Texture2D" uid="uid://tteey0pg81fv" path="res://earthquake Asset/Grocery Table.png" id="1_0tp4w"]
-[ext_resource type="Script" path="res://table_hide.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://o550r357m7yd" path="res://table_hide.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://d3v5enbqtirae" path="res://asset/Interaction/Interaction Area/interaction_area.tscn" id="2_interaction"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7hqv6"]
