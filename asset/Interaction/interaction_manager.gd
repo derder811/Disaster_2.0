@@ -62,10 +62,20 @@ func _process(delta):
 	if not player:
 		return
 	
+	# Prune invalid or freed areas to avoid accessing invalid nodes
+	for i in range(active_areas.size() - 1, -1, -1):
+		var area = active_areas[i]
+		if area == null or not is_instance_valid(area):
+			active_areas.remove_at(i)
+	
 	if active_areas.size() > 0:
 		# Sort areas by distance to player
 		active_areas.sort_custom(sort_by_distance_to_player)
 		var closest_area = active_areas[0]
+		if closest_area == null or not is_instance_valid(closest_area):
+			if label:
+				label.visible = false
+			return
 		
 		# Show interaction prompt for closest area
 		if label:
@@ -80,7 +90,8 @@ func _process(delta):
 		# Handle interaction input
 		if Input.is_action_just_pressed("interact"):
 			print("DEBUG: E key pressed! Calling interact on: ", closest_area.action_name)
-			closest_area.interact.call()
+			if closest_area.interact:
+				closest_area.interact.call()
 	else:
 		# Hide interaction prompt when no areas are active
 		if label:
@@ -89,12 +100,21 @@ func _process(delta):
 func _input(event):
 	# Check if E key is pressed
 	if event.is_action_pressed("interact") or (event is InputEventKey and event.pressed and event.keycode == KEY_E):
-		if active_areas.size() > 0:  # Safety check before accessing array
-			print("InteractionManager: E key pressed, calling interact on: ", active_areas[0].action_name)
-			can_interact = false
-			label.visible = false
-			await active_areas[0].interact.call()
-			can_interact = true
+		# Prune invalid entries before use
+		for i in range(active_areas.size() - 1, -1, -1):
+			var area = active_areas[i]
+			if area == null or not is_instance_valid(area):
+				active_areas.remove_at(i)
+		
+		if active_areas.size() > 0:
+			var area = active_areas[0]
+			if area != null and is_instance_valid(area):
+				print("InteractionManager: E key pressed, calling interact on: ", area.action_name)
+				can_interact = false
+				if label:
+					label.visible = false
+				await area.interact.call()
+				can_interact = true
 
 # Function to show fallback self-talk when system is not found
 func _show_fallback_self_talk():

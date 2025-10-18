@@ -1,11 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://debbae0xl24vd"]
+[gd_scene load_steps=4 format=3 uid="uid://debbae0xl24vd"]
 
+[ext_resource type="Script" path="res://table_hide.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://tteey0pg81fv" path="res://earthquake Asset/Grocery Table.png" id="1_l6n3u"]
+[ext_resource type="PackedScene" uid="uid://d3v5enbqtirae" path="res://asset/Interaction/Interaction Area/interaction_area.tscn" id="2_interaction"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6bfdg"]
 size = Vector2(103, 207)
 
 [node name="Table 2" type="Area2D"]
+script = ExtResource("1_script")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -1)
@@ -13,5 +16,11 @@ scale = Vector2(0.22, 0.236571)
 texture = ExtResource("1_l6n3u")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 0.5)
+shape = SubResource("RectangleShape2D_6bfdg")
+
+[node name="InteractionArea" parent="." instance=ExtResource("2_interaction")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 position = Vector2(-0.5, 0.5)
 shape = SubResource("RectangleShape2D_6bfdg")

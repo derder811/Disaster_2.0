@@ -44,3 +44,7 @@ func _on_body_exited(body):
 		InteractionManager.unregister_area(self)
 	else:
 		print("DEBUG: Non-Player2 body exited")
+
+func _exit_tree():
+	print("InteractionArea: exiting tree, unregistering if needed")
+	InteractionManager.unregister_area(self)
