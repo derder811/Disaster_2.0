@@ -23,7 +23,6 @@ func _get_dialog_box() -> Node:
 	return inst
 
 func _on_interact() -> void:
-	print("Cashier NPC: player interacted")
 	var lines: Array[String] = [
 		"Hello... Welcome to the store.",
 		"Yes we accept Gcash payment"
