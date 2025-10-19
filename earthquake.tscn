@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://bjkpnjhn5p5ll"]
+[gd_scene load_steps=40 format=4 uid="uid://bjkpnjhn5p5ll"]
 
 [ext_resource type="Texture2D" uid="uid://bmwlesqnyqitg" path="res://earthquake Asset/EQ Tileset.png" id="1_ny0hn"]
 [ext_resource type="Texture2D" uid="uid://brc11ppc6xbdj" path="res://earthquake Asset/SuperMarket.png" id="2_6f7f8"]
@@ -12,6 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://2qtu5slxw7k4" path="res://earthquake Asset/Outside Chair.png" id="7_ar1gu"]
 [ext_resource type="Texture2D" uid="uid://f8ch702fpghh" path="res://earthquake Asset/Electric Line Post.png" id="8_njc4q"]
 [ext_resource type="PackedScene" uid="uid://cjtfeqjgwd35q" path="res://asset/Interaction/InteractionManager.tscn" id="11_interaction_manager"]
+[ext_resource type="PackedScene" uid="uid://bgll4a52be7j0" path="res://pause_scene.tscn" id="99_pause"]
+[ext_resource type="PackedScene" uid="uid://dphjv3kh6kr78" path="res://game_settings.tscn" id="100_settings"]
+[ext_resource type="PackedScene" uid="uid://cn78s64y0du1h" path="res://Settings Button.tscn" id="101_settings_btn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hy6pp"]
 texture = ExtResource("1_ny0hn")
@@ -10860,3 +10863,9 @@ script = ExtResource("5_naruto_eq_self_talk")
 
 [node name="InteractionManager" parent="." instance=ExtResource("11_interaction_manager")]
 position = Vector2(1255, 433)
+
+[node name="PauseMenu" parent="." instance=ExtResource("99_pause")]
+
+[node name="GameSettings" parent="." instance=ExtResource("100_settings")]
+
+[node name="SettingsButton" parent="." instance=ExtResource("101_settings_btn")]
