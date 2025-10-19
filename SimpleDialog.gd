@@ -2,6 +2,8 @@ extends Control
 
 @onready var background = $Background
 @onready var content_label = $Background/Border/InnerBackground/VBoxContainer/ContentContainer/ContentLabel
+@onready var header_label = $Background/Border/InnerBackground/VBoxContainer/Header
+@onready var footer_label = $Background/Border/InnerBackground/VBoxContainer/Footer/FooterLabel
 
 var current_text = ""
 var is_showing = false
@@ -13,10 +15,15 @@ func _ready():
 	# Start with scale 0 for pop animation
 	scale = Vector2.ZERO
 
-func show_dialog(text: String, position: Vector2 = Vector2.ZERO):
+func show_dialog(text: String, position: Vector2 = Vector2.ZERO, header: String = "TIPS", footer_hint: String = "Close(Space)"):
 	print("SimpleDialog.show_dialog called with: ", text)
 	current_text = text
 	content_label.text = text
+	# Update header and footer labels
+	if header_label:
+		header_label.text = header
+	if footer_label:
+		footer_label.text = footer_hint
 	
 	# Position the dialog
 	if position != Vector2.ZERO:

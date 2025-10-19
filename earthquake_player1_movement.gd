@@ -28,6 +28,9 @@ var interaction_ui: Node  # Reference to enhanced UI system
 # Bag/Inventory reference
 @onready var bag: Control
 
+# DialogBox scene reference
+var _dialog_box_scene: PackedScene = preload("res://Scenes/dialog_box.tscn")
+
 
 func _ready():
 	# Add player to the Player1 group for interaction system
@@ -37,6 +40,8 @@ func _ready():
 	setup_bag_reference()
 	# Connect to physics process for smooth movement
 	set_physics_process(true)
+	# Show welcome dialog centered on screen after scene loads
+	call_deferred("_show_earthquake_welcome")
 
 func setup_enhanced_ui():
 	# Get reference to the scene-level InteractionUI node
@@ -244,3 +249,32 @@ func get_inventory():
 func on_interact(player):
 	print("Player 1: Someone is trying to interact with me!")
 	# Add any specific behavior when other objects interact with this player
+
+# Internal: ensure a DialogBox exists and return it
+func _ensure_dialog_box_present() -> Node:
+	var dialog_box = get_tree().get_first_node_in_group("dialog_system")
+	if dialog_box and is_instance_valid(dialog_box):
+		return dialog_box
+	# Not present: instance and add to current scene
+	if _dialog_box_scene:
+		var instance = _dialog_box_scene.instantiate()
+		var scene = get_tree().current_scene
+		if scene:
+			scene.add_child(instance)
+			print("DialogBox instantiated and added to scene")
+			return instance
+	print("Failed to instantiate DialogBox scene")
+	return null
+
+# Show earthquake welcome dialog centered on screen
+func _show_earthquake_welcome() -> void:
+	if Engine.is_editor_hint():
+		return
+	# Ensure DialogBox exists and show centered welcome
+	var dialog_box = _ensure_dialog_box_present()
+	if dialog_box and dialog_box.has_method("show_dialog"):
+		var welcome_text := "Welcome to the Earthquake scenario!\n\nMove with WASD. Press E to interact.\nWhen shaking starts, drop, cover, and hold under a sturdy table."
+		var lines: Array[String] = [welcome_text] as Array[String]
+		dialog_box.show_dialog("WELCOME", lines)
+	else:
+		print("DialogBox not found; cannot show earthquake welcome")

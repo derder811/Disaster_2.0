@@ -22,10 +22,11 @@ var safety_tips = {
 	"power_bank": "Keep a fully charged power bank ready before the storm. It's essential for communication when electricity is down.",
 	"bucket": "• Store clean water in buckets before a typhoon in case water supply gets cut off\n• Collect rainwater during the storm for non-drinking purposes\n• Keep containers covered to prevent contamination",
 	"e_fan": "ELECTRICAL TIPS:\n• Check cords for damage before use\n• Keep electrical devices away from water\n• Don't overload electrical outlets\n• Have backup power sources ready\n• Know how to shut off main electrical breaker",
-	"frying_pan": "COOKING TIPS:\n• Never leave cooking unattended\n• Keep pot handles turned inward\n• Have a fire extinguisher nearby\n• Know how to turn off gas/electricity quickly\n• Keep flammable items away from heat sources"
+	"frying_pan": "COOKING TIPS:\n• Never leave cooking unattended\n• Keep pot handles turned inward\n• Have a fire extinguisher nearby\n• Know how to turn off gas/electricity quickly\n• Keep flammable items away from heat sources",
+	"earthquake_welcome": "Welcome to the Earthquake scenario!\n\nMove with WASD. Press E to interact.\nWhen shaking starts, drop, cover, and hold under a sturdy table."
 }
 
-func show_safety_tips(asset_type: String, position: Vector2):
+func show_safety_tips(asset_type: String, position: Vector2, header: String = "TIPS", footer_hint: String = "Close(Space)"):
 	print("SimpleDialogManager.show_safety_tips called for: ", asset_type)
 	
 	# Close existing dialog if any
@@ -40,7 +41,7 @@ func show_safety_tips(asset_type: String, position: Vector2):
 	# Create and show dialog
 	current_dialog = dialog_scene.instantiate()
 	get_tree().root.add_child(current_dialog)
-	current_dialog.show_dialog(tip, position)
+	current_dialog.show_dialog(tip, position, header, footer_hint)
 	
 	print("Safety tips dialog created and shown")
 
