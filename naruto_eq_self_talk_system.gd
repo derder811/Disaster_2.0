@@ -17,6 +17,12 @@ var has_shown_startup_message = false
 var timer_self_talk_active = false
 var current_message_index = 0
 @onready var player = get_parent()
+# Bottom textbox UI (match screenshot)
+var _textbox_layer: CanvasLayer = null
+var _textbox_panel: Panel = null
+var _textbox_label: Label = null
+var _textbox_active: bool = false
+var _textbox_ttl_timer: Timer = null
 
 func _ready():
 	print("NarutoEQSelfTalkSystem: _ready() called")
@@ -77,10 +83,6 @@ func show_specific_message(message_index: int):
 		print("NarutoEQSelfTalkSystem: ERROR - Player not found or invalid")
 		return
 	
-	if not DialogManager:
-		print("NarutoEQSelfTalkSystem: ERROR - DialogManager not available")
-		return
-	
 	var messages = self_talk_messages["timer_based"]
 	if message_index >= messages.size():
 		print("NarutoEQSelfTalkSystem: ERROR - Message index out of bounds")
@@ -112,9 +114,8 @@ func show_specific_message(message_index: int):
 			dialog_position = player.global_position + Vector2(0, -100)
 		
 		print("NarutoEQSelfTalkSystem: Final dialog position: ", dialog_position)
-		print("NarutoEQSelfTalkSystem: Calling DialogManager.start_dialog...")
-		DialogManager.start_dialog(dialog_position, [message])
-		print("NarutoEQSelfTalkSystem: DialogManager.start_dialog called successfully")
+		# Mirror to bottom textbox UI
+		_show_textbox(message)
 
 func show_timer_self_talk():
 	print("NarutoEQSelfTalkSystem: show_timer_self_talk() called")
@@ -146,9 +147,8 @@ func show_timer_self_talk():
 			dialog_position = player.global_position + Vector2(0, -100)
 		
 		print("NarutoEQSelfTalkSystem: Final dialog position: ", dialog_position)
-		print("NarutoEQSelfTalkSystem: Calling DialogManager.start_dialog...")
-		DialogManager.start_dialog(dialog_position, [random_message])
-		print("NarutoEQSelfTalkSystem: DialogManager.start_dialog called successfully")
+		# Mirror to bottom textbox UI
+		_show_textbox(random_message)
 
 # Function to trigger custom self-talk with a specific message
 func trigger_custom_self_talk(custom_message: String):
@@ -171,7 +171,7 @@ func trigger_custom_self_talk(custom_message: String):
 			# Fallback: position above player center
 			dialog_position = player.global_position + Vector2(0, -100)
 		
-		DialogManager.start_dialog(dialog_position, [custom_message])
+		_show_textbox(custom_message)
 
 # Function to trigger convenience store self-talk
 func trigger_convenience_store_self_talk():
@@ -204,4 +204,88 @@ func trigger_self_talk(message_type: String = "timer_based"):
 				# Fallback: position above player center
 				dialog_position = player.global_position + Vector2(0, -100)
 			
-			DialogManager.start_dialog(dialog_position, [random_message])
+			_show_textbox(random_message)
+
+# -----------------------------
+# Bottom textbox implementation
+# -----------------------------
+func _ensure_textbox_nodes():
+	if _textbox_layer == null:
+		_textbox_layer = CanvasLayer.new()
+		_textbox_layer.layer = 150
+		add_child(_textbox_layer)
+	if _textbox_panel == null:
+		_textbox_panel = Panel.new()
+		# Anchor to bottom, full width with margins
+		_textbox_panel.anchor_left = 0.0
+		_textbox_panel.anchor_right = 1.0
+		_textbox_panel.anchor_top = 1.0
+		_textbox_panel.anchor_bottom = 1.0
+		_textbox_panel.offset_left = 24
+		_textbox_panel.offset_right = -24
+		_textbox_panel.offset_top = -140
+		_textbox_panel.offset_bottom = -24
+		_textbox_panel.custom_minimum_size = Vector2(0, 110)
+		# Style: dark rounded background
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0, 0, 0, 0.75)
+		sb.corner_radius_top_left = 10
+		sb.corner_radius_top_right = 10
+		sb.corner_radius_bottom_left = 10
+		sb.corner_radius_bottom_right = 10
+		_textbox_panel.add_theme_stylebox_override("panel", sb)
+		_textbox_panel.visible = false
+		_textbox_layer.add_child(_textbox_panel)
+	if _textbox_label == null:
+		_textbox_label = Label.new()
+		_textbox_label.anchor_left = 0.0
+		_textbox_label.anchor_right = 1.0
+		_textbox_label.anchor_top = 0.0
+		_textbox_label.anchor_bottom = 1.0
+		_textbox_label.offset_left = 16
+		_textbox_label.offset_right = -16
+		_textbox_label.offset_top = 10
+		_textbox_label.offset_bottom = -10
+		_textbox_label.autowrap_mode = TextServer.AUTOWRAP_WORD
+		_textbox_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		_textbox_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		_textbox_label.add_theme_color_override("font_color", Color(1,1,1,1))
+		_textbox_panel.add_child(_textbox_label)
+	if _textbox_ttl_timer == null:
+		_textbox_ttl_timer = Timer.new()
+		_textbox_ttl_timer.one_shot = true
+		_textbox_ttl_timer.timeout.connect(_hide_textbox)
+		add_child(_textbox_ttl_timer)
+
+func _update_textbox_style(is_urgent: bool):
+	if _textbox_panel == null:
+		return
+	var sb := StyleBoxFlat.new()
+	if is_urgent:
+		sb.bg_color = Color(0.10, 0.00, 0.00, 0.85)
+	else:
+		sb.bg_color = Color(0, 0, 0, 0.75)
+	sb.corner_radius_top_left = 10
+	sb.corner_radius_top_right = 10
+	sb.corner_radius_bottom_left = 10
+	sb.corner_radius_bottom_right = 10
+	_textbox_panel.add_theme_stylebox_override("panel", sb)
+	if _textbox_label != null:
+		_textbox_label.add_theme_color_override("font_color", Color(1,1,1,1))
+
+func _show_textbox(message: String, seconds: float = 4.0, urgent: bool = false):
+	_ensure_textbox_nodes()
+	_update_textbox_style(urgent)
+	_textbox_label.text = message
+	_textbox_panel.visible = true
+	_textbox_active = true
+	if _textbox_ttl_timer != null:
+		if seconds > 0.0:
+			_textbox_ttl_timer.start(seconds)
+		else:
+			_textbox_ttl_timer.stop()
+
+func _hide_textbox():
+	_textbox_active = false
+	if _textbox_panel != null:
+		_textbox_panel.visible = false

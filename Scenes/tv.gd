@@ -30,21 +30,20 @@ func _on_interact():
 		if sprite != null:
 			sprite.flip_h = overlapping_bodies[0].global_position.x < global_position.x
 		
-		# Use the new DialogManager autoload with asset type for safety tips
-		var dialog_position = global_position + Vector2(0, -50)  # Position dialog above TV
-		DialogManager.start_dialog(dialog_position, lines, "tv")
+		# Show self-talk in bottom textbox via SelfTalkSystem
+		var sys = get_tree().get_first_node_in_group("self_talk_system")
+		if sys and sys.has_method("trigger_custom_self_talk"):
+			sys.trigger_custom_self_talk(lines[0])
 		
-		# Show SimpleDialog safety tips after text box finishes (delay for text box to complete)
-		await get_tree().create_timer(5.0).timeout  # Wait for text box to finish
+		# Show SimpleDialog safety tips after self-talk completes
+		await get_tree().create_timer(4.5).timeout
 		SimpleDialogManager.show_safety_tips("tv", global_position)
 		
-		# Trigger self-talk after interaction
+		# Follow-up self-talk message
 		await get_tree().create_timer(2.0).timeout
-		var self_talk_nodes = get_tree().get_nodes_in_group("self_talk_system")
-		if self_talk_nodes.size() > 0:
-			var self_talk_system = self_talk_nodes[0]
-			if self_talk_system.has_method("trigger_custom_self_talk"):
-				self_talk_system.trigger_custom_self_talk("The storm's getting worse… I should cut the power off.")
+		var sys2 = get_tree().get_first_node_in_group("self_talk_system")
+		if sys2 and sys2.has_method("trigger_custom_self_talk"):
+			sys2.trigger_custom_self_talk("The storm's getting worse… I should cut the power off.")
 		
 		# Complete the quest objective for TV interaction
 		var quest_node = get_node("../Quest")

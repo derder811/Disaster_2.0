@@ -312,3 +312,15 @@ func _draw():
 		if closest_interactable and is_instance_valid(closest_interactable):
 			var direction = (closest_interactable.global_position - global_position)
 			draw_line(Vector2.ZERO, direction, Color.GREEN, 2.0)
+
+# Forward item self-talk to SelfTalkSystem for consistent bottom textbox UI
+func trigger_item_self_talk(item_type: String):
+	var sys = get_tree().get_first_node_in_group("self_talk_system")
+	if sys and sys.has_method("trigger_after_item_interact_talk"):
+		sys.trigger_after_item_interact_talk(item_type)
+
+# Forward custom self-talk to SelfTalkSystem
+func trigger_custom_self_talk(message: String):
+	var sys = get_tree().get_first_node_in_group("self_talk_system")
+	if sys and sys.has_method("trigger_custom_self_talk"):
+		sys.trigger_custom_self_talk(message)

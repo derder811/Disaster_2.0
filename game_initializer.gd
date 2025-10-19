@@ -54,16 +54,19 @@ func show_self_talk_message():
 	var messages = self_talk_messages["game_start"]
 	var random_message = messages[randi() % messages.size()]
 	
-	# Find the player to position the message near them
+	# Prefer the unified SelfTalkSystem bottom textbox instead of bubble
+	var sys = get_tree().get_first_node_in_group("self_talk_system")
+	if sys and sys.has_method("trigger_custom_self_talk"):
+		sys.trigger_custom_self_talk(random_message)
+		return
+	
+	# Fallback: if the self talk system isn't present, continue with bubble
 	var player = get_tree().get_first_node_in_group("Player2")
 	if player:
-		# Get the player's sprite position for accurate text positioning
 		var sprite = player.get_node("Sprite2D")
 		var sprite_position = player.global_position
 		if sprite:
 			sprite_position = player.global_position + sprite.position
-		
-		# Position the text above the player's head (sprite top)
 		var dialog_position = sprite_position + Vector2(0, -80)
 		DialogManager.start_dialog(dialog_position, [random_message])
 

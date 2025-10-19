@@ -21,6 +21,9 @@ func _on_interact():
 	if overlapping_bodies.size() > 0:
 		sprite.flip_h = overlapping_bodies[0].global_position.x < global_position.x
 		
-		# Use the new DialogManager autoload
-		var dialog_position = global_position + Vector2(0, -50)  # Position dialog above NPC
-		DialogManager.start_dialog(dialog_position, lines)
+		# Show bottom textbox self-talk sequence via SelfTalkSystem
+		var sys = get_tree().get_first_node_in_group("self_talk_system")
+		if sys and sys.has_method("trigger_custom_self_talk"):
+			for text in lines:
+				sys.trigger_custom_self_talk(text)
+				await get_tree().create_timer(4.0).timeout

@@ -10779,7 +10779,6 @@ texture = ExtResource("6_ar1gu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="House/StaticBody2D"]
 position = Vector2(3.70996, 89.6335)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_gpkge")
 
 [node name="Outside Chair" type="Sprite2D" parent="."]

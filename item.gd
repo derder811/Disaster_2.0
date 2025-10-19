@@ -112,7 +112,5 @@ func show_item_self_talk(message: String):
 	if self_talk_system and self_talk_system.has_method("trigger_custom_self_talk"):
 		self_talk_system.trigger_custom_self_talk(message)
 	else:
-		# Fallback: use DialogManager directly
-		if player_nearby:
-			var dialog_position = player_nearby.global_position + Vector2(0, -100)
-			DialogManager.start_dialog(dialog_position, [message])
+		# No SelfTalkSystem available; log for debugging
+		print("SelfTalkSystem not found; skipping bubble dialog for item self-talk.")

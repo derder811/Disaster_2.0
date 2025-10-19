@@ -7,14 +7,14 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_suotf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jej64"]
-radius = 17.9915
-height = 35.983
+radius = 28.0081
+height = 368.047
 
-[sub_resource type="Curve2D" id="Curve2D_fnyjl"]
+[sub_resource type="Curve2D" id="Curve2D_jej64"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -668, -401, 0, 0, 0, 0, -670, -640, 0, 0, 0, 0, -271, -631, 0, 0, 0, 0, -257, -88, 0, 0, 0, 0, 79, -86, 0, 0, 0, 0, 81, 121, 0, 0, 0, 0, -668, -401)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 36, 0, 0, 0, 0, 418.909, 45.3334, 0, 0, 0, 0, 421.818, 276, 0, 0, 0, 0, 551.273, 276, 0, 0, 0, 0, 619.636, 277.333, 0, 0, 0, 0, 676.364, 280, 0, 0, 0, 0, 676.364, 385.333, 0, 0, 0, 0, 683.636, 492, 0, 0, 0, 0, 670.545, 526.667, 0, 0, 0, 0, 680.727, 610.667, 0, 0, 0, 0, 788.364, 625.333, 0, 0, 0, 0, 922.182, 626.667, 0, 0, 0, 0, 971.636, 633.333, 0, 0, 0, 0, 930.909, 713.333, 0, 0, 0, 0, 958.545, 748, 0, 0, 0, 0, 962.909, 768, 0, 0, 0, 0, 958.545, 793.333, 0, 0, 0, 0, 0, 36)
 }
-point_count = 7
+point_count = 18
 
 [sub_resource type="Animation" id="Animation_7hqv6"]
 length = 0.001
@@ -169,7 +169,7 @@ script = ExtResource("2_gtkkr")
 metadata/_custom_type_script = "uid://bx21va8686o4h"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-position = Vector2(1, 0)
+position = Vector2(144, 9)
 rotation = -1.56662
 shape = SubResource("CapsuleShape2D_jej64")
 
@@ -180,13 +180,11 @@ texture = ExtResource("1_w8lub")
 hframes = 20
 
 [node name="Path2D" type="Path2D" parent="Sprite2D"]
-position = Vector2(967.273, 593.333)
-scale = Vector2(1.45455, 1.33333)
-curve = SubResource("Curve2D_fnyjl")
+curve = SubResource("Curve2D_jej64")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Sprite2D/Path2D"]
-position = Vector2(-668, -401)
-rotation = -1.57916
+position = Vector2(0, 36)
+rotation = 0.0222765
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

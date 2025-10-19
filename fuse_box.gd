@@ -31,12 +31,13 @@ func _on_interact():
 		if sprite != null:
 			sprite.flip_h = overlapping_bodies[0].global_position.x < global_position.x
 		
-		# Use the new DialogManager autoload with asset type for safety tips
-		var dialog_position = global_position + Vector2(0, -50)  # Position dialog above fuse box
-		DialogManager.start_dialog(dialog_position, lines, "fuse_box")
+		# Show self-talk in bottom textbox via SelfTalkSystem
+		var sys = get_tree().get_first_node_in_group("self_talk_system")
+		if sys and sys.has_method("trigger_custom_self_talk"):
+			sys.trigger_custom_self_talk(lines[0])
 		
-		# Show SimpleDialog safety tips after text box finishes (delay for text box to complete)
-		await get_tree().create_timer(5.0).timeout  # Wait for text box to finish
+		# Show SimpleDialog safety tips after self-talk completes
+		await get_tree().create_timer(4.5).timeout
 		SimpleDialogManager.show_safety_tips("fuse_box", global_position)
 		
 		# Complete the quest objective for fuse box interaction

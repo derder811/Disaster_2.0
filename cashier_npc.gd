@@ -124,3 +124,47 @@ func face_exit_walk() -> void:
 			exit_pos = exit_node.global_position
 	var dir := exit_pos - ref_pos
 	face_towards(dir, true)
+
+# --- New: Follow Path2D to exit ---
+var follow_exit_path: bool = false
+var exit_path_points: Array[Vector2] = []
+var exit_path_index: int = 0
+var exit_path_speed: float = 120.0
+
+func start_exit_via_path():
+	# Use the Path2D defined under the cashier scene to walk to exit
+	var path := get_node_or_null("Sprite2D/Path2D") as Path2D
+	if path == null or path.curve == null:
+		print("Cashier NPC: Path2D not found or curve missing")
+		return
+	# Bake the curve to a list of global points so it doesn't move with the NPC
+	exit_path_points.clear()
+	for p in path.curve.get_baked_points():
+		# Convert local path point to world-space
+		exit_path_points.append(path.to_global(p))
+	if exit_path_points.size() == 0:
+		print("Cashier NPC: Path2D has no baked points")
+		return
+	exit_path_index = 0
+	follow_exit_path = true
+	print("Cashier NPC: starting exit walk via Path2D (", exit_path_points.size(), " points)")
+
+func _physics_process(delta):
+	if follow_exit_path:
+		if exit_path_index >= exit_path_points.size():
+			follow_exit_path = false
+			velocity = Vector2.ZERO
+			face_towards(Vector2.ZERO, false)
+			return
+		var target: Vector2 = exit_path_points[exit_path_index]
+		var to_target: Vector2 = target - global_position
+		if to_target.length() < 5.0:
+			exit_path_index += 1
+			return
+		var dir: Vector2 = to_target.normalized()
+		velocity = dir * exit_path_speed
+		face_towards(dir, true)
+		move_and_slide()
+	else:
+		# Idle when not following a path
+		velocity = Vector2.ZERO
