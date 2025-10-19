@@ -24,11 +24,9 @@ func _get_dialog_box() -> Node:
 
 func _on_interact() -> void:
 	print("Cashier NPC: player interacted")
-	# Conversation lines with Player 3
 	var lines: Array[String] = [
-		"Hey there—are you okay? The store is shaking.",
-		"Quick tip: Drop, cover, and hold under a sturdy table.",
-		"When the shaking slows down, check the quest panel and proceed."
+		"Hello... Welcome to the store.",
+		"Yes we accept Gcash payment"
 	]
 	# Prefer bottom DialogBox UI for conversation
 	var box = _get_dialog_box()

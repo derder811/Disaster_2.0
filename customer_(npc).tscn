@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://dcu7sodrqumrr"]
+[gd_scene load_steps=14 format=3 uid="uid://dcu7sodrqumrr"]
 
 [ext_resource type="Texture2D" uid="uid://cmcklqrghoc0a" path="res://earthquake Asset/Kid Female sprites.png" id="1_a7gql"]
 [ext_resource type="Script" uid="uid://bx21va8686o4h" path="res://asset/Interaction/Interaction Area/interaction_area.gd" id="2_exmd2"]
+[ext_resource type="Script" path="res://customer_npc.gd" id="3_customer_npc"]
 
 [sub_resource type="Animation" id="Animation_ctmct"]
 length = 0.001
@@ -125,6 +126,7 @@ radius = 75.0067
 radius = 132.061
 
 [node name="Customer (NPC)" type="CharacterBody2D"]
+script = ExtResource("3_customer_npc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(967, 391)
@@ -151,8 +153,10 @@ rotation = 1.56606
 position = Vector2(965, 399)
 shape = SubResource("CircleShape2D_1rxg2")
 
-[node name="InteractionArea" type="Area2D" parent="."]
+[node name="InteractionArea" type="Area2D" parent="." groups=["interactable"]]
 position = Vector2(968, 397)
+collision_layer = 0
+collision_mask = 2
 script = ExtResource("2_exmd2")
 metadata/_custom_type_script = "uid://bx21va8686o4h"
 
