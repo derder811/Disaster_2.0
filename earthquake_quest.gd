@@ -25,6 +25,8 @@ var game_over_scene_path: String = "res://game_over.tscn"
 var _continuous_shake_running: bool = false
 var _camera_original_offset: Vector2 = Vector2.ZERO
 
+func is_active() -> bool:
+	return _quest_active
 func _ready():
 	quest_box = get_node_or_null("Quest UI/Earthquake Quest Box")
 	checkbox1 = get_node_or_null("Quest UI/Earthquake Quest Box/QuestContainer/Objectives/Objective1/CheckBox1")

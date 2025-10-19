@@ -157,3 +157,30 @@ func trigger_custom_self_talk(message: String):
 	"""Trigger custom self-talk message"""
 	if self_talk_system:
 		self_talk_system.trigger_custom_self_talk(message)
+
+# --- Cover API for table hide ---
+func hide_for_cover():
+	# Hide the entire player and its sprite; stop processing
+	visible = false
+	modulate = Color(1, 1, 1, 0)  # Force alpha to 0 as a safety net
+	if sprite:
+		sprite.visible = false
+		sprite.modulate = Color(1, 1, 1, 0)
+	set_physics_process(false)
+	set_process(false)
+	# Hide any on-screen self-talk UI to avoid lingering bubbles
+	if self_talk_system:
+		if self_talk_system.has_method("_hide_textbox"):
+			self_talk_system._hide_textbox()
+		if self_talk_system.has_method("_hide_bubble"):
+			self_talk_system._hide_bubble()
+
+func show_after_cover():
+	# Restore visuals and processing
+	visible = true
+	modulate = Color(1, 1, 1, 1)
+	if sprite:
+		sprite.visible = true
+		sprite.modulate = Color(1, 1, 1, 1)
+	set_physics_process(true)
+	set_process(true)

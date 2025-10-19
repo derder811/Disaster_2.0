@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=4 uid="uid://dhhip6kurcl8k"]
+[gd_scene load_steps=66 format=4 uid="uid://dhhip6kurcl8k"]
 
 [ext_resource type="Texture2D" uid="uid://ce3mh38hfnjq4" path="res://earthquake Asset/Grocery Titeset.png" id="1_v2xvf"]
 [ext_resource type="Texture2D" uid="uid://ex6vuokpyrv4" path="res://asset/Wall.png" id="2_n3o6q"]
@@ -28,7 +28,7 @@
 [ext_resource type="Script" uid="uid://bfpo3un3k6cdb" path="res://comprehensive_debug.gd" id="24_comprehensive_debug"]
 [ext_resource type="Script" uid="uid://d1yw73c1iqib0" path="res://test_interaction_debug.gd" id="25_interaction_debug"]
 [ext_resource type="PackedScene" uid="uid://bgb87dydao761" path="res://cashier_(npc).tscn" id="29_suotf"]
-[ext_resource type="Texture2D" uid="uid://cmcklqrghoc0a" path="res://earthquake Asset/Kid Female sprites.png" id="30_suotf"]
+[ext_resource type="PackedScene" uid="uid://dcu7sodrqumrr" path="res://customer_(npc).tscn" id="30_suotf"]
 [ext_resource type="PackedScene" path="res://store_quest.tscn" id="99_store_quest"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eky7a"]
@@ -10542,9 +10542,6 @@ size = Vector2(1283.96, 649.644)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_suotf"]
 size = Vector2(308, 182)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_m1a2q"]
-size = Vector2(248, 82)
-
 [sub_resource type="Animation" id="Animation_463xk"]
 length = 0.001
 tracks/0/type = "value"
@@ -10673,122 +10670,8 @@ transitions = ["Start", "Walk", SubResource("AnimationNodeStateMachineTransition
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pv4qk"]
 size = Vector2(30, 48)
 
-[sub_resource type="Animation" id="Animation_mkmae"]
-resource_name = "walk_down"
-length = 0.853
-loop_mode = 2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4]
-}
-
-[sub_resource type="Animation" id="Animation_6bfdg"]
-resource_name = "walk_up"
-length = 0.853
-loop_mode = 2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [15, 16, 17, 18, 19]
-}
-
-[sub_resource type="Animation" id="Animation_m1a2q"]
-resource_name = "walk_left"
-length = 0.853
-loop_mode = 2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [5, 6, 7, 8, 9]
-}
-
-[sub_resource type="Animation" id="Animation_uu51g"]
-resource_name = "walk_right"
-length = 0.853
-loop_mode = 2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [10, 11, 12, 13, 14]
-}
-
-[sub_resource type="Animation" id="Animation_3er4e"]
-resource_name = "idle"
-loop_mode = 2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [15]
-}
-
-[sub_resource type="Animation" id="Animation_ctmct"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [15]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_vxsws"]
-_data = {
-&"RESET": SubResource("Animation_ctmct"),
-&"idle": SubResource("Animation_3er4e"),
-&"walk_down": SubResource("Animation_mkmae"),
-&"walk_left": SubResource("Animation_m1a2q"),
-&"walk_right": SubResource("Animation_uu51g"),
-&"walk_up": SubResource("Animation_6bfdg")
-}
-
-[sub_resource type="Curve2D" id="Curve2D_suotf"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 965, 400, 0, 0, 0, 0, 967, 822, 0, 0, 0, 0, 835, 834, 0, 0, 0, 0, 839, 1044, 0, 0, 0, 0, 965, 400, 0, 0, 0, 0, 30, 463, 0, 0, 0, 0, 61, 462)
-}
-point_count = 7
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_1rxg2"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m1a2q"]
+size = Vector2(248, 82)
 
 [node name="Inside The Store" type="Node2D"]
 
@@ -10959,24 +10842,6 @@ position = Vector2(1426, -12)
 [node name="Hotdog and Siopao" parent="." instance=ExtResource("17_4v8su")]
 position = Vector2(702, 479)
 
-[node name="Table 1" parent="." instance=ExtResource("18_lgrq0")]
-position = Vector2(1429, -268)
-
-[node name="Table 3" parent="." instance=ExtResource("19_566k6")]
-position = Vector2(1088, 599)
-
-[node name="Table 2" parent="." instance=ExtResource("20_4v8su")]
-position = Vector2(441, 124)
-
-[node name="Store Exit" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Store Exit"]
-position = Vector2(837, 1046)
-shape = SubResource("RectangleShape2D_m1a2q")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(838, 921)
-
 [node name="PLAYER 3" type="CharacterBody2D" parent="."]
 position = Vector2(838, 921)
 collision_layer = 2
@@ -11004,6 +10869,24 @@ shape = SubResource("RectangleShape2D_pv4qk")
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="PLAYER 3"]
 remote_path = NodePath("../../Camera2D")
 
+[node name="Table 1" parent="." instance=ExtResource("18_lgrq0")]
+position = Vector2(1429, -268)
+
+[node name="Table 3" parent="." instance=ExtResource("19_566k6")]
+position = Vector2(1088, 599)
+
+[node name="Table 2" parent="." instance=ExtResource("20_4v8su")]
+position = Vector2(441, 124)
+
+[node name="Store Exit" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Store Exit"]
+position = Vector2(837, 1046)
+shape = SubResource("RectangleShape2D_m1a2q")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(838, 921)
+
 [node name="TestInteraction" type="Node2D" parent="."]
 script = ExtResource("21_test_script")
 
@@ -11023,29 +10906,4 @@ script = ExtResource("25_interaction_debug")
 [node name="Cashier (NPC)" parent="." instance=ExtResource("29_suotf")]
 position = Vector2(717, 901)
 
-[node name="Customer (NPC)" type="CharacterBody2D" parent="."]
-
-[node name="Sprite2D" type="Sprite2D" parent="Customer (NPC)"]
-position = Vector2(967, 391)
-scale = Vector2(0.664062, 0.759766)
-texture = ExtResource("30_suotf")
-hframes = 20
-frame = 15
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Customer (NPC)"]
-root_node = NodePath("../Sprite2D")
-libraries = {
-&"": SubResource("AnimationLibrary_vxsws")
-}
-autoplay = "idle"
-
-[node name="Path2D" type="Path2D" parent="Customer (NPC)"]
-curve = SubResource("Curve2D_suotf")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Customer (NPC)/Path2D"]
-position = Vector2(965, 400)
-rotation = 1.56606
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Customer (NPC)"]
-position = Vector2(966, 404)
-shape = SubResource("CircleShape2D_1rxg2")
+[node name="Customer (NPC)" parent="." instance=ExtResource("30_suotf")]
