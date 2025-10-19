@@ -170,6 +170,9 @@ func _update_node_and_cam_along_curve(progress: float, node: Node2D, curve: Curv
 	node.global_position = target_sprite_global - anchor_local
 	# Center camera on the sprite position
 	cam.global_position = target_sprite_global + extra_offset
+	# NEW: keep NPC facing exit while moving along the curve
+	if node and node.has_method("face_exit_walk"):
+		node.face_exit_walk()
 
 func _tween_node_and_cam_along_curve(node: Node2D, curve: Curve2D, cam: Camera2D, anchor_local: Vector2, extra_offset: Vector2, duration: float) -> void:
 	var callable := Callable(self, "_update_node_and_cam_along_curve").bind(node, curve, cam, anchor_local, extra_offset)
@@ -200,6 +203,11 @@ func _play_pre_earthquake_evacuation_cutscene() -> void:
 	var cashier = scene.find_child("Cashier (NPC)", true, false)
 	var customer = scene.find_child("Customer (NPC)", true, false)
 	var exit_area = scene.find_child("Store Exit", true, false)
+	# Ensure walking animations face exit at the start
+	if cashier and cashier.has_method("face_exit_walk"):
+		cashier.face_exit_walk()
+	if customer and customer.has_method("face_exit_walk"):
+		customer.face_exit_walk()
 	# Keep a reference to the gameplay camera to restore later
 	var player_cam: Camera2D = scene.get_node_or_null("Camera2D")
 	# Create/activate cutscene camera we fully control
@@ -224,6 +232,9 @@ func _play_pre_earthquake_evacuation_cutscene() -> void:
 		await get_tree().create_timer(0.1).timeout
 	if cashier:
 		var cashier_anchor_local := _get_npc_anchor_local(cashier)
+		# Reinforce walking facing before moving
+		if cashier.has_method("face_exit_walk"):
+			cashier.face_exit_walk()
 		# Build a curve for the visible sprite position directly to the exit
 		var cashier_start := _get_npc_visual_position(cashier)
 		var cashier_curve := _build_evacuation_curve(cashier_start, exit_pos + Vector2(0, -60), exit_out_pos)
@@ -239,6 +250,9 @@ func _play_pre_earthquake_evacuation_cutscene() -> void:
 		await get_tree().create_timer(0.1).timeout
 	if customer:
 		var customer_anchor_local := _get_npc_anchor_local(customer)
+		# Ensure facing exit before moving (walk)
+		if customer.has_method("face_exit_walk"):
+			customer.face_exit_walk()
 		# Build a curve for the visible sprite position directly to the exit
 		var customer_start := _get_npc_visual_position(customer)
 		var customer_curve := _build_evacuation_curve(customer_start, exit_pos + Vector2(0, -60), exit_out_pos)

@@ -1,8 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://dcu7sodrqumrr"]
+[gd_scene load_steps=20 format=3 uid="uid://dcu7sodrqumrr"]
 
 [ext_resource type="Texture2D" uid="uid://cmcklqrghoc0a" path="res://earthquake Asset/Kid Female sprites.png" id="1_a7gql"]
 [ext_resource type="Script" uid="uid://bx21va8686o4h" path="res://asset/Interaction/Interaction Area/interaction_area.gd" id="2_exmd2"]
-[ext_resource type="Script" path="res://customer_npc.gd" id="3_customer_npc"]
+[ext_resource type="Script" uid="uid://dfl3i204jgc0h" path="res://customer_npc.gd" id="3_customer_npc"]
 
 [sub_resource type="Animation" id="Animation_ctmct"]
 length = 0.001
@@ -21,7 +21,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_3er4e"]
 resource_name = "idle"
-loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -38,7 +37,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_mkmae"]
 resource_name = "walk_down"
 length = 0.853
-loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -55,7 +53,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_m1a2q"]
 resource_name = "walk_left"
 length = 0.853
-loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -72,7 +69,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_uu51g"]
 resource_name = "walk_right"
 length = 0.853
-loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -89,7 +85,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_6bfdg"]
 resource_name = "walk_up"
 length = 0.853
-loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -103,10 +98,58 @@ tracks/0/keys = {
 "values": [15, 16, 17, 18, 19]
 }
 
+[sub_resource type="Animation" id="Animation_idle_right"]
+resource_name = "idle_right"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+
+[sub_resource type="Animation" id="Animation_idle_left"]
+resource_name = "idle_left"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+
+[sub_resource type="Animation" id="Animation_idle_down"]
+resource_name = "idle_down"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vxsws"]
 _data = {
 &"RESET": SubResource("Animation_ctmct"),
 &"idle": SubResource("Animation_3er4e"),
+&"idle_down": SubResource("Animation_idle_down"),
+&"idle_left": SubResource("Animation_idle_left"),
+&"idle_right": SubResource("Animation_idle_right"),
 &"walk_down": SubResource("Animation_mkmae"),
 &"walk_left": SubResource("Animation_m1a2q"),
 &"walk_right": SubResource("Animation_uu51g"),
@@ -125,6 +168,18 @@ radius = 75.0067
 [sub_resource type="CircleShape2D" id="CircleShape2D_altbl"]
 radius = 132.061
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_altbl"]
+animation = &"idle_down"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uvma4"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_hj0ap"]
+states/Start/position = Vector2(168, 100)
+states/idle_down/node = SubResource("AnimationNodeAnimation_altbl")
+states/idle_down/position = Vector2(305, 100)
+transitions = ["Start", "idle_down", SubResource("AnimationNodeStateMachineTransition_uvma4")]
+
 [node name="Customer (NPC)" type="CharacterBody2D"]
 script = ExtResource("3_customer_npc")
 
@@ -140,7 +195,6 @@ root_node = NodePath("../Sprite2D")
 libraries = {
 &"": SubResource("AnimationLibrary_vxsws")
 }
-autoplay = "idle"
 
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource("Curve2D_suotf")
@@ -163,3 +217,8 @@ metadata/_custom_type_script = "uid://bx21va8686o4h"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 position = Vector2(-3, -5)
 shape = SubResource("CircleShape2D_altbl")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Sprite2D")
+tree_root = SubResource("AnimationNodeStateMachine_hj0ap")
+anim_player = NodePath("../AnimationPlayer")

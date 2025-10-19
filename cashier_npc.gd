@@ -1,6 +1,8 @@
 extends CharacterBody2D
 
 @onready var interaction_area: InteractionArea = $InteractionArea
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
+@onready var anim_tree: AnimationTree = $AnimationTree
 var dialog_box_scene: PackedScene = preload("res://Scenes/dialog_box.tscn")
 var store_quest_activated: bool = false
 
@@ -78,3 +80,47 @@ func _show_store_quest_ui() -> void:
 			print("Cashier NPC: StoreQuest found but no start_quest/show_quest_ui methods")
 	else:
 		print("Cashier NPC: StoreQuest node not found in current scene")
+
+func face_towards(dir: Vector2, moving: bool = false) -> void:
+	if anim_player == null:
+		return
+	var anim_name := "idle"
+	if moving:
+		if abs(dir.x) > abs(dir.y):
+			anim_name = "walk_right" if dir.x >= 0 else "walk_left"
+		else:
+			anim_name = "walk_down" if dir.y >= 0 else "walk_up"
+	anim_player.play(anim_name)
+	if anim_tree != null:
+		var n := dir.normalized()
+		if moving:
+			# Drive AnimationTree Walk state during movement
+			anim_tree.active = true
+			var playback = anim_tree.get("parameters/playback")
+			if playback != null:
+				playback.travel("Walk")
+			anim_tree.set("parameters/Walk/blend_position", Vector2(n.x, n.y))
+		else:
+			# Disable AnimationTree to avoid overriding AnimationPlayer when idle
+			anim_tree.active = false
+
+func face_exit_walk() -> void:
+	var scene := get_tree().current_scene
+	if scene == null:
+		return
+	var exit_node: Node2D = scene.find_child("Store Exit", true, false) as Node2D
+	if exit_node == null:
+		exit_node = scene.get_node_or_null("Staff Only Door") as Node2D
+	var ref_pos: Vector2 = global_position
+	var spr := get_node_or_null("Sprite2D") as Node2D
+	if spr != null:
+		ref_pos = spr.global_position
+	var exit_pos: Vector2 = Vector2.ZERO
+	if exit_node != null:
+		var exit_shape := exit_node.get_node_or_null("CollisionShape2D") as Node2D
+		if exit_shape != null:
+			exit_pos = exit_shape.global_position
+		else:
+			exit_pos = exit_node.global_position
+	var dir := exit_pos - ref_pos
+	face_towards(dir, true)

@@ -10903,7 +10903,7 @@ script = ExtResource("24_comprehensive_debug")
 [node name="InteractionDebugTest" type="Node2D" parent="."]
 script = ExtResource("25_interaction_debug")
 
+[node name="Customer (NPC)" parent="." instance=ExtResource("30_suotf")]
+
 [node name="Cashier (NPC)" parent="." instance=ExtResource("29_suotf")]
 position = Vector2(717, 901)
-
-[node name="Customer (NPC)" parent="." instance=ExtResource("30_suotf")]
