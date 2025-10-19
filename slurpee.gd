@@ -249,14 +249,43 @@ func _play_pre_earthquake_evacuation_cutscene() -> void:
 	# Focus briefly on the exit (zoom back to normal)
 	if cam:
 		await _focus_camera(cam, exit_pos, Vector2(1.0, 1.0), 0.9)
-	# Return camera to player and restore smoothing
-	if player and player_cam:
+	# Return camera to player, then hand control back to gameplay camera
+	if player and cam:
 		await _focus_camera(cam, (player as Node2D).global_position, Vector2(1.0, 1.0), 0.8)
-	# Re-enable the player's RemoteTransform to resume following and restore player camera
+	# Re-enable player follow and actively switch to the camera the RemoteTransform targets
+	var restored_cam: Camera2D = player_cam
 	if remote_rt and remote_rt is RemoteTransform2D:
 		print("Cutscene: restoring RemoteTransform to:", old_remote_path)
 		(remote_rt as RemoteTransform2D).remote_path = old_remote_path
-	_cleanup_cutscene_camera(scene, cam, player_cam)
+		(remote_rt as RemoteTransform2D).update_position = true
+		(remote_rt as RemoteTransform2D).update_rotation = false
+		(remote_rt as RemoteTransform2D).update_scale = false
+		var target = (remote_rt as Node).get_node_or_null(old_remote_path)
+		if target and target is Camera2D:
+			restored_cam = target as Camera2D
+			# Snap gameplay camera to player immediately and make it current
+			if player and player is Node2D:
+				(restored_cam as Camera2D).global_position = (player as Node2D).global_position
+			(restored_cam as Camera2D).make_current()
+		else:
+			# Fallback: reattach to default store camera path and make it current
+			var default_path := NodePath("../../Camera2D")
+			(remote_rt as RemoteTransform2D).remote_path = default_path
+			var fb_target = (remote_rt as Node).get_node_or_null(default_path)
+			if fb_target and fb_target is Camera2D:
+				restored_cam = fb_target as Camera2D
+				if player and player is Node2D:
+					(restored_cam as Camera2D).global_position = (player as Node2D).global_position
+				(restored_cam as Camera2D).make_current()
+			elif player_cam:
+				player_cam.make_current()
+	# Force current after one frame to ensure viewport uses restored camera
+	await get_tree().process_frame
+	var viewport_cam := get_viewport().get_camera_2d()
+	if restored_cam and viewport_cam != restored_cam:
+		(restored_cam as Camera2D).make_current()
+	# Clean up cutscene cam and ensure restored camera is current
+	_cleanup_cutscene_camera(scene, cam, restored_cam)
 
 func _trigger_earthquake_quest():
 	# Avoid duplicating the quest if already present
