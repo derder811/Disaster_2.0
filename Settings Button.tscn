@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://fala2ut7bwc2" path="res://settings_button.gd" id="2_script"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
+layer = 600
 script = ExtResource("2_script")
 
 [node name="Settings Button" type="TextureButton" parent="."]

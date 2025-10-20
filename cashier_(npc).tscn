@@ -184,7 +184,7 @@ curve = SubResource("Curve2D_jej64")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Sprite2D/Path2D"]
 position = Vector2(0, 36)
-rotation = 0.0222765
+rotation = 0.0222766
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -28,7 +28,9 @@ const MOVE_DOWN = "ui_down"         # S key / Down Arrow
 const WASD_LEFT = "move_left_p3"    # A key for Player 3
 const WASD_RIGHT = "move_right_p3"  # D key for Player 3
 const WASD_UP = "move_up_p3"        # W key for Player 3
-const WASD_DOWN = "move_down_p3"    # S key for Player 3
+const WASD_DOWN = "move_down_p3"  # S key for Player 3
+# Interaction UI reference
+var interaction_ui: Node = null
 func _ready():
 	# Add player to Player2 group for interaction system
 	add_to_group("Player2")
@@ -36,6 +38,9 @@ func _ready():
 	
 	# Initialize self-talk system
 	setup_self_talk_system()
+	
+	# Ensure mobile overlay (joystick + interact + prompt)
+	ensure_mobile_overlay()
 	
 	# Store initial position
 	last_position = global_position
@@ -55,6 +60,28 @@ func _ready():
 		movement_comment_timer.autostart = true
 		movement_comment_timer.timeout.connect(_on_movement_comment_timer_timeout)
 		add_child(movement_comment_timer)
+
+func ensure_mobile_overlay():
+	var scene = get_tree().current_scene
+	var root = get_tree().root
+	print("Store: ensure_mobile_overlay on scene:", scene)
+	if root:
+		if not root.get_node_or_null("InteractionUI"):
+			print("Store: Adding InteractionUI overlay to root")
+			var ui_scene: PackedScene = load("res://InteractionUI.tscn")
+			if ui_scene:
+				var ui_instance = ui_scene.instantiate()
+				ui_instance.name = "InteractionUI"
+				root.add_child(ui_instance)
+		if not root.get_node_or_null("MobileControls"):
+			print("Store: Adding MobileControls overlay to root")
+			var mc_scene: PackedScene = load("res://MobileControls.tscn")
+			if mc_scene:
+				var mc_instance = mc_scene.instantiate()
+				mc_instance.name = "MobileControls"
+				root.add_child(mc_instance)
+	interaction_ui = root.get_node_or_null("InteractionUI")
+	print("Store: InteractionUI present on root:", interaction_ui != null)
 
 func _on_movement_comment_timer_timeout():
 	# Trigger movement comment on a fixed interval

@@ -125,7 +125,7 @@ func _on_typhoon_button_pressed():
 # Function called when Earthquake button is pressed
 func _on_earthquake_button_pressed():
 	print("Earthquake button pressed - Loading earthquake scenario")
-	_animate_button_click("earthquake", func(): _transition_to_scene("res://GAME_SCENE/first_scenario.tscn", "Earthquake"))
+	_animate_button_click("earthquake", func(): _transition_to_scene("res://earthquake.tscn", "Earthquake"))
 
 # Optional: Add keyboard support for accessibility
 func _input(event):

@@ -36,12 +36,36 @@ func _ready():
 	# Add player to the Player1 group for interaction system
 	add_to_group("Player1")
 	setup_interaction_ui()
+	ensure_mobile_overlay()
 	setup_enhanced_ui()
 	setup_bag_reference()
 	# Connect to physics process for smooth movement
 	set_physics_process(true)
 	# Show welcome dialog centered on screen after scene loads
 	call_deferred("_show_earthquake_welcome")
+
+func ensure_mobile_overlay():
+	var scene = get_tree().current_scene
+	var root = get_tree().root
+	print("Earthquake: ensure_mobile_overlay on scene:", scene)
+	if root:
+		if not root.get_node_or_null("InteractionUI"):
+			print("Earthquake: Adding InteractionUI overlay to root")
+			var ui_scene: PackedScene = load("res://InteractionUI.tscn")
+			if ui_scene:
+				var ui_instance = ui_scene.instantiate()
+				ui_instance.name = "InteractionUI"
+				root.add_child(ui_instance)
+		if not root.get_node_or_null("MobileControls"):
+			print("Earthquake: Adding MobileControls overlay to root")
+			var mc_scene: PackedScene = load("res://MobileControls.tscn")
+			if mc_scene:
+				var mc_instance = mc_scene.instantiate()
+				mc_instance.name = "MobileControls"
+				root.add_child(mc_instance)
+	# Update reference for enhanced UI
+	interaction_ui = root.get_node_or_null("InteractionUI")
+	print("Earthquake: InteractionUI present on root:", interaction_ui != null)
 
 func setup_enhanced_ui():
 	# Get reference to the scene-level InteractionUI node
@@ -273,7 +297,7 @@ func _show_earthquake_welcome() -> void:
 	# Ensure DialogBox exists and show centered welcome
 	var dialog_box = _ensure_dialog_box_present()
 	if dialog_box and dialog_box.has_method("show_dialog"):
-		var welcome_text := "Welcome to the Earthquake scenario!\n\nMove with WASD. Press E to interact.\nWhen shaking starts, drop, cover, and hold under a sturdy table."
+		var welcome_text := "It’s a calm afternoon. The sun is high, and the street feels peaceful as people go about their day. You stop in front of a small grocery store, thinking of picking up a few items before heading home."
 		var lines: Array[String] = [welcome_text] as Array[String]
 		dialog_box.show_dialog("WELCOME", lines)
 	else:

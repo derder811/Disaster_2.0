@@ -23,7 +23,7 @@ var safety_tips = {
 	"bucket": "• Store clean water in buckets before a typhoon in case water supply gets cut off\n• Collect rainwater during the storm for non-drinking purposes\n• Keep containers covered to prevent contamination",
 	"e_fan": "ELECTRICAL TIPS:\n• Check cords for damage before use\n• Keep electrical devices away from water\n• Don't overload electrical outlets\n• Have backup power sources ready\n• Know how to shut off main electrical breaker",
 	"frying_pan": "COOKING TIPS:\n• Never leave cooking unattended\n• Keep pot handles turned inward\n• Have a fire extinguisher nearby\n• Know how to turn off gas/electricity quickly\n• Keep flammable items away from heat sources",
-	"earthquake_welcome": "Welcome to the Earthquake scenario!\n\nMove with WASD. Press E to interact.\nWhen shaking starts, drop, cover, and hold under a sturdy table."
+	"earthquake_welcome": "It’s a calm afternoon. The sun is high, and the street feels peaceful as people go about their day. You stop in front of a small grocery store, thinking of picking up a few items before heading home."
 }
 
 func show_safety_tips(asset_type: String, position: Vector2, header: String = "TIPS", footer_hint: String = "Close(Space)"):

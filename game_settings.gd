@@ -77,10 +77,15 @@ func _apply_settings():
 func show_settings():
 	visible = true
 	get_tree().paused = true  # Pause the game when showing settings
-	
+	# Ensure this panel doesn't block children and sits above base canvas
+	mouse_filter = Control.MOUSE_FILTER_PASS
+	z_index = 1000
+	# Temporarily disable other overlays that may block clicks
+	_get_mobile_controls_blocking(true)
+	_get_interaction_ui_blocking(true)
+	_get_dialog_box_blocking(true)
 	# Center the UI on the current camera/viewport
 	_center_ui_on_camera()
-	
 	_fade_in_menu()
 
 func _center_ui_on_camera():
@@ -118,6 +123,10 @@ func hide_settings():
 	_fade_out_menu()
 	# Resume the game directly when hiding settings
 	get_tree().paused = false
+	# Restore overlays
+	_get_mobile_controls_blocking(false)
+	_get_interaction_ui_blocking(false)
+	_get_dialog_box_blocking(false)
 
 func _fade_in_menu():
 	var fade_tween = create_tween()
@@ -145,6 +154,10 @@ func resume_game():
 	visible = false
 	# Unpause the game
 	get_tree().paused = false
+	# Restore overlays
+	_get_mobile_controls_blocking(false)
+	_get_interaction_ui_blocking(false)
+	_get_dialog_box_blocking(false)
 	print("Game resumed successfully")
 
 func go_to_main_menu():
@@ -199,3 +212,48 @@ func _animate_button_click(button_name: String, callback: Callable):
 	await click_tween.finished
 	is_transitioning = false
 	callback.call()
+
+# --- Overlay management (match PauseMenu behavior) -------------------------
+func _get_mobile_controls() -> Node:
+	var root := get_tree().root
+	return root.get_node_or_null("MobileControls")
+
+func _get_interaction_ui() -> Node:
+	var root := get_tree().root
+	return root.get_node_or_null("InteractionUI")
+
+func _get_dialog_box() -> Node:
+	var root := get_tree().root
+	return root.get_node_or_null("DialogBox")
+
+func _get_mobile_controls_blocking(block: bool) -> void:
+	var mc := _get_mobile_controls()
+	if mc:
+		var ui_root := mc.get_node_or_null("UIRoot")
+		if ui_root:
+			ui_root.visible = not block
+			ui_root.mouse_filter = Control.MOUSE_FILTER_IGNORE if block else Control.MOUSE_FILTER_STOP
+			var interact := ui_root.get_node_or_null("InteractButton")
+			if interact:
+				interact.mouse_filter = Control.MOUSE_FILTER_IGNORE if block else Control.MOUSE_FILTER_STOP
+			var joystick := ui_root.get_node_or_null("Joystick")
+			if joystick:
+				for c in [joystick, joystick.get_node_or_null("Base"), joystick.get_node_or_null("Knob")]:
+					if c:
+						c.mouse_filter = Control.MOUSE_FILTER_IGNORE if block else Control.MOUSE_FILTER_STOP
+
+func _get_interaction_ui_blocking(block: bool) -> void:
+	var iu := _get_interaction_ui()
+	if iu:
+		var ui_root := iu.get_node_or_null("UIRoot")
+		if ui_root:
+			ui_root.mouse_filter = Control.MOUSE_FILTER_IGNORE if block else Control.MOUSE_FILTER_STOP
+			ui_root.visible = not block
+
+func _get_dialog_box_blocking(block: bool) -> void:
+	var db := _get_dialog_box()
+	if db:
+		var dlg := db.get_node_or_null("DialogControl")
+		if dlg:
+			dlg.mouse_filter = Control.MOUSE_FILTER_IGNORE if block else Control.MOUSE_FILTER_STOP
+			dlg.visible = not block
